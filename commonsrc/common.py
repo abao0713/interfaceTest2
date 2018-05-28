@@ -3,8 +3,8 @@ import readConfig as readConfig
 import os
 import xlrd
 from xml.etree import ElementTree as ElementTree
-from common import configHttp as configHttp
-from common.Log import MyLog as Log
+from commonsrc import configHttp as configHttp
+from commonsrc.Log import MyLog as Log
 import json
 
 localReadConfig = readConfig.ReadConfig()
@@ -154,9 +154,9 @@ def get_url_from_xml(name):
             for c in u.getchildren():
                 url_list.append(c.text)
 
-    url = '/v2/' + '/'.join(url_list)
+    url = '/api/' + '/'.join(url_list)
+    print(url)
     return url
 
 if __name__ == "__main__":
-    print(get_xls("login"))
-    set_visitor_token_to_config()
+    get_url_from_xml('read')

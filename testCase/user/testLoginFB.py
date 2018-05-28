@@ -1,9 +1,9 @@
 import unittest
 import paramunittest
 import readConfig as readConfig
-from common.Log import MyLog
-from common import common
-from common import configHttp
+from commonsrc.Log import MyLog
+from commonsrc import common
+from commonsrc import configHttp
 
 localReadConfig = readConfig.ReadConfig()
 localConfigHttp = configHttp.ConfigHttp()

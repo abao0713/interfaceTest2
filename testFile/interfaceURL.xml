@@ -83,4 +83,9 @@
         <module>product</module>
         <action>info</action>
     </url>
+    <url name="read">
+        <group>assignee</group>
+        <module>messageReminder</module>
+        <action>unread</action>
+    </url>
 </interface>

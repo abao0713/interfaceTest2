@@ -1,10 +1,10 @@
 import readConfig as readConfig
-from common.Log import MyLog
-from common import configHttp
-from common import common
+from commonsrc.Log import MyLog
+from commonsrc import configHttp
+from commonsrc import common
 import unittest
 import paramunittest
-from common import configDB
+from commonsrc import configDB
 
 register_xls = common.get_xls("userCase.xlsx", "register")
 localConfigHttp = configHttp.ConfigHttp()

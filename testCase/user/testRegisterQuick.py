@@ -1,10 +1,10 @@
 import readConfig as readConfig
 import unittest
 import paramunittest
-from common.Log import MyLog
-from common import configHttp
-from common import common
-from common import configDB
+from commonsrc.Log import MyLog
+from commonsrc import configHttp
+from commonsrc import common
+from commonsrc import configDB
 
 localRegisterQuick_xls = common.get_xls("userCase.xlsx", "registerquick")
 localReadConfig = readConfig.ReadConfig()

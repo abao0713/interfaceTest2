@@ -2,10 +2,10 @@ import os
 import unittest
 import paramunittest
 import readConfig as readConfig
-from common import common
-from common import configHttp
-from common import businessCommon
-from common.Log import MyLog
+from commonsrc import common
+from commonsrc import configHttp
+from commonsrc import businessCommon
+from commonsrc.Log import MyLog
 
 localUploadImg_xls = common.get_xls("userCase.xlsx", "uploadImg")
 localReadConfig = readConfig.ReadConfig()

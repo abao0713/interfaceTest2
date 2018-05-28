@@ -1,6 +1,6 @@
 import requests
 import readConfig as readConfig
-from common.Log import MyLog as Log
+from commonsrc.Log import MyLog as Log
 import json
 
 localReadConfig = readConfig.ReadConfig()
@@ -127,4 +127,6 @@ class ConfigHttp:
             return None
 
 if __name__ == "__main__":
-    print("ConfigHTTP")
+    a = ConfigHttp()
+    b=a.set_url("/api/assignee/messageReminder/unread")
+    print(b)

@@ -1,5 +1,5 @@
-from common import common
-from common import configHttp
+from commonsrc import common
+from commonsrc import configHttp
 import readConfig as readConfig
 
 localReadConfig = readConfig.ReadConfig()

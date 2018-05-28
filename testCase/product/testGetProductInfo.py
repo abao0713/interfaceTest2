@@ -1,9 +1,9 @@
 import unittest
 import paramunittest
-from common import common
-from common.Log import MyLog
+from commonsrc import common
+from commonsrc.Log import MyLog
 import readConfig as readConfig
-from common import configHttp as configHttp
+from commonsrc import configHttp as configHttp
 
 productInfo_xls = common.get_xls("productCase.xlsx", "getProductInfo")
 localReadConfig = readConfig.ReadConfig()
@@ -97,4 +97,5 @@ class ProductInfo(unittest.TestCase):
             self.assertEqual(self.info['code'], self.info['code'])
             self.assertEqual(self.info['msg'], self.msg)
 if __name__ == '__main__':
-    pass
+    a = ProductInfo()
+    a.testGetProductInfo()

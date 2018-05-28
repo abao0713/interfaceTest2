@@ -1,25 +1,24 @@
 import unittest
 import paramunittest
-import readConfig as ReadConfig
-from commonsrc.Log import MyLog
 from commonsrc import common
-from commonsrc import configHttp
-from commonsrc import businessCommon
+from commonsrc.Log import MyLog
+import readConfig as readConfig
+from commonsrc import configHttp as configHttp
 
-localReadConfig = ReadConfig.ReadConfig()
+productInfo_xls = common.get_xls("productCase.xlsx", "getProductInfo")
+localReadConfig = readConfig.ReadConfig()
 localConfigHttp = configHttp.ConfigHttp()
-localLogout_xls = common.get_xls("userCase.xlsx", "logout")
 
 
-@paramunittest.parametrized(*localLogout_xls)
-class Logout(unittest.TestCase):
-
-    def setParameters(self, case_name, method, token, result, code, msg):
+@paramunittest.parametrized(*productInfo_xls)
+class ProductInfo(unittest.TestCase):
+    def setParameters(self, case_name, method, token, goods_id, data, code, msg):
         """
-        set parameters
+        set params
         :param case_name:
         :param method:
         :param token:
+        :param goods_id:
         :param result:
         :param code:
         :param msg:
@@ -28,7 +27,8 @@ class Logout(unittest.TestCase):
         self.case_name = str(case_name)
         self.method = str(method)
         self.token = str(token)
-        self.result = str(result)
+        self.goodsId = str(goods_id)
+        self.data = str(data)
         self.code = str(code)
         self.msg = str(msg)
         self.response = None
@@ -48,31 +48,33 @@ class Logout(unittest.TestCase):
         """
         self.log = MyLog.get_log()
         self.logger = self.log.get_logger()
-        # login
-        self.login_token = businessCommon.login()
 
-    def testLogout(self):
+    def testGetProductInfo(self):
         """
         test body
         :return:
         """
-        # set url
-        self.url = common.get_url_from_xml('logout')
-        localConfigHttp.set_url(self.url)
+        # set uel
+        self.url = common.get_url_from_xml('read')
 
-        # set header
+        localConfigHttp.set_url(self.url)
+        # set params
+        if self.goodsId == '' or self.goodsId is None:
+            params = None
+        elif self.goodsId == 'null':
+            params = {"goods_id": ""}
+        else:
+            params = {"goods_id": self.goodsId}
+        localConfigHttp.set_params(params)
+        # set headers
         if self.token == '0':
-            token = self.login_token
-        elif self.token == '1':
             token = localReadConfig.get_headers("token_v")
         else:
             token = self.token
-        header = {'token': token}
-        localConfigHttp.set_headers(header)
-
-        # test interface
+        headers = {"token": str(token)}
+        localConfigHttp.set_headers(headers)
+        # get http
         self.response = localConfigHttp.get()
-
         # check result
         self.checkResult()
 
@@ -84,17 +86,17 @@ class Logout(unittest.TestCase):
         self.log.build_case_line(self.case_name, self.info['code'], self.info['msg'])
 
     def checkResult(self):
-        """
-        check test result
-        :return:
-        """
         self.info = self.response.json()
         common.show_return_msg(self.response)
 
         if self.result == '0':
             self.assertEqual(self.info['code'], self.code)
             self.assertEqual(self.info['msg'], self.msg)
-            self.assertEqual(self.info['info'], 1)
+            goods_id = common.get_value_from_return_json(self.info, "Product", "goods_id")
+            self.assertEqual(goods_id, self.goodsId)
         if self.result == '1':
-            self.assertEqual(self.info['code'], self.code)
+            self.assertEqual(self.info['code'], self.info['code'])
             self.assertEqual(self.info['msg'], self.msg)
+if __name__ == '__main__':
+
+    a.testGetProductInfo()
