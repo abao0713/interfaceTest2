@@ -49,5 +49,6 @@ class ReadConfig:
         return value
     def get_user_info(self,info):
         value = self.cf.get("USERINFO",info)
+        return value
 
 

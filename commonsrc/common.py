@@ -21,10 +21,10 @@ def get_visitor_token():
     create a token for visitor
     :return:
     """
-    host = localReadConfig.get_http("BASEURL")
-    response = requests.get(host+"/v2/User/Token/generate")
+    host = localReadConfig.get_http("url")
+    response = requests.get(host+"/api/assignee/call/getLoginInfo")
     info = response.json()
-    token = info.get("info")
+    token = info.get("tokencode")
     logger.debug("Create token:%s" % (token))
     return token
 
@@ -159,4 +159,4 @@ def get_url_from_xml(name):
     return url
 
 if __name__ == "__main__":
-    get_url_from_xml('read')
+    get_visitor_token()
