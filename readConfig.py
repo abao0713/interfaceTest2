@@ -47,6 +47,7 @@ class ReadConfig:
     def get_db(self, name):
         value = self.cf.get("DATABASE", name)
         return value
-
+    def get_user_info(self,info):
+        value = self.cf.get("USERINFO",info)
 
 

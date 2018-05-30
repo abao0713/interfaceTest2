@@ -12,13 +12,13 @@ localConfigHttp = configHttp.ConfigHttp()
 
 @paramunittest.parametrized(*productInfo_xls)
 class ProductInfo(unittest.TestCase):
-    def setParameters(self, case_name, method, token, goods_id, data, code, msg):
+    def setParameters(self, case_name, method, token, param, data, code, msg):
         """
         set params
         :param case_name:
         :param method:
         :param token:
-        :param goods_id:
+        :param param:
         :param result:
         :param code:
         :param msg:
@@ -27,7 +27,7 @@ class ProductInfo(unittest.TestCase):
         self.case_name = str(case_name)
         self.method = str(method)
         self.token = str(token)
-        self.goodsId = str(goods_id)
+        self.goodsId = str(param)
         self.data = str(data)
         self.code = str(code)
         self.msg = str(msg)
@@ -48,6 +48,8 @@ class ProductInfo(unittest.TestCase):
         """
         self.log = MyLog.get_log()
         self.logger = self.log.get_logger()
+    #   用例执行前登录服务器
+
 
     def testGetProductInfo(self):
         """
@@ -59,13 +61,14 @@ class ProductInfo(unittest.TestCase):
 
         localConfigHttp.set_url(self.url)
         # set params
-        if self.goodsId == '' or self.goodsId is None:
-            params = None
-        elif self.goodsId == 'null':
-            params = {"goods_id": ""}
+
+        if self.method == 'get':
+            param = None
+        elif self.params == '':
+            param = {}
         else:
-            params = {"goods_id": self.goodsId}
-        localConfigHttp.set_params(params)
+            param = 'null'
+        localConfigHttp.set_params(param)
         # set headers
         if self.token == '0':
             token = localReadConfig.get_headers("token_v")
@@ -98,5 +101,4 @@ class ProductInfo(unittest.TestCase):
             self.assertEqual(self.info['code'], self.info['code'])
             self.assertEqual(self.info['msg'], self.msg)
 if __name__ == '__main__':
-
-    a.testGetProductInfo()
+    testGetProductInfo()
