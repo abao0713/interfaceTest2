@@ -31,8 +31,8 @@ def get_visitor_token():
                 "Origin": "https://www.mujin.assignee.com"
 
               }
-    s =  requests.session()
-    response = s.post(host+"/api/assignee/call/getLoginInfo",data=json.dumps({}),headers=headers,verify=False)
+
+    response = requests.post(host+"/api/assignee/call/getLoginInfo",data=json.dumps({}),headers=headers,verify=False)
     info = response.json()
     if info["code"] == 0:
         token = info["data"]["tokencode"]
@@ -41,8 +41,9 @@ def get_visitor_token():
     else:
         msg = info["msg"]
         print(msg)
+        return "abcdefg"
 
-def login():
+def get_login_cookies():
     host = localReadConfig.get_http("url")
     print(host)
     headers = {"Host": "www.mujin.assignee.com",
@@ -55,21 +56,23 @@ def login():
     data = {"username":1222,"password":"Aa123456","jCaptchaCode":"","holder":"SPONSOR"
 
     }
-    s=requests.session()
-    response = s.post(host + "/api/login", data=data, headers=headers,
+
+    response = requests.post(host + "/api/login", data=data, headers=headers,
                              verify=False)
     info = response.json()
-    print(info["msg"])
-
+    cookie=response.cookies.get_dict()
+    print(cookie)
+    print("登录状态:",info["msg"])
+    return cookie
 
 
 def set_visitor_token_to_config():
     """
-    set token that created for visitor to config
+    set cookie that created for visitor to config
     :return:
     """
     token_v = get_visitor_token()
-    localReadConfig.set_headers("TOKEN_V", token_v)
+    localReadConfig.set_headers("token_v", token_v)
 
 
 def get_value_from_return_json(json, name1, name2):
@@ -193,5 +196,6 @@ def get_url_from_xml(name):
     return url
 
 if __name__ == "__main__":
-    login()
+    get_login_cookies()
     get_visitor_token()
+    set_visitor_token_to_config()
