@@ -22,11 +22,26 @@ def get_visitor_token():
     :return:
     """
     host = localReadConfig.get_http("url")
-    response = requests.get(host+"/api/assignee/call/getLoginInfo")
+    print(host)
+    headers ={"Host": "www.mujin.assignee.com",
+                "Connection": "keep-alive",
+                "Content-Length": "2",
+                "Accept": "application/json, text/plain, */*",
+                "Origin": "https://www.mujin.assignee.com"
+
+
+                                }
+    response = requests.post(host+"/api/assignee/call/getLoginInfo",data=json.dumps({}),headers=headers,verify=False)
     info = response.json()
-    token = info.get("tokencode")
-    logger.debug("Create token:%s" % (token))
-    return token
+    if info["code"] == 0:
+        token = info["data"]["tokencode"]
+        logger.debug("Create token:%s" % (token))
+        return token
+    else:
+        msg = info["msg"]
+        print(msg)
+
+
 
 
 def set_visitor_token_to_config():
