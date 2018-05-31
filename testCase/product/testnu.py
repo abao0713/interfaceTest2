@@ -49,7 +49,7 @@ class ProductInfo(unittest.TestCase):
         self.log = MyLog.get_log()
         self.logger = self.log.get_logger()
     #   用例执行前登录服务器
-
+        common.login()
 
     def testGetProductInfo(self):
         """
@@ -77,7 +77,7 @@ class ProductInfo(unittest.TestCase):
         headers = {"token": str(token)}
         localConfigHttp.set_headers(headers)
         # get http
-        self.response = localConfigHttp.get()
+        self.response = localConfigHttp.post()
         # check result
         self.checkResult()
 
@@ -95,7 +95,7 @@ class ProductInfo(unittest.TestCase):
         if self.result == '0':
             self.assertEqual(self.info['code'], self.code)
             self.assertEqual(self.info['msg'], self.msg)
-            goods_id = common.get_value_from_return_json(self.info, "Product", "goods_id")
+            goods_id = common.get_value_from_return_json(self.info, "data", "goods_id")
             self.assertEqual(goods_id, self.goodsId)
         if self.result == '1':
             self.assertEqual(self.info['code'], self.info['code'])

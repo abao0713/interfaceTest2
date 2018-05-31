@@ -21,6 +21,7 @@ def get_visitor_token():
     create a token for visitor
     :return:
     """
+
     host = localReadConfig.get_http("url")
     print(host)
     headers ={"Host": "www.mujin.assignee.com",
@@ -29,9 +30,9 @@ def get_visitor_token():
                 "Accept": "application/json, text/plain, */*",
                 "Origin": "https://www.mujin.assignee.com"
 
-
-                                }
-    response = requests.post(host+"/api/assignee/call/getLoginInfo",data=json.dumps({}),headers=headers,verify=False)
+              }
+    s =  requests.session()
+    response = s.post(host+"/api/assignee/call/getLoginInfo",data=json.dumps({}),headers=headers,verify=False)
     info = response.json()
     if info["code"] == 0:
         token = info["data"]["tokencode"]
@@ -41,6 +42,24 @@ def get_visitor_token():
         msg = info["msg"]
         print(msg)
 
+def login():
+    host = localReadConfig.get_http("url")
+    print(host)
+    headers = {"Host": "www.mujin.assignee.com",
+               "Connection": "keep-alive",
+               "Content-Length": "2",
+               "Accept": "application/json, text/plain, */*",
+               "Origin": "https://www.mujin.assignee.com"
+
+               }
+    data = {"username":1222,"password":"Aa123456","jCaptchaCode":"","holder":"SPONSOR"
+
+    }
+    s=requests.session()
+    response = s.post(host + "/api/login", data=data, headers=headers,
+                             verify=False)
+    info = response.json()
+    print(info["msg"])
 
 
 
@@ -174,4 +193,5 @@ def get_url_from_xml(name):
     return url
 
 if __name__ == "__main__":
+    login()
     get_visitor_token()
