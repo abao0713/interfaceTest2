@@ -145,15 +145,15 @@ def set_xml():
         tree = ElementTree.parse(sql_path)
         for db in tree.findall("database"):
             db_name = db.get("name")
-            # print(db_name)
+            print(db_name)
             table = {}
             for tb in db.getchildren():
                 table_name = tb.get("name")
-                # print(table_name)
+                print(table_name)
                 sql = {}
                 for data in tb.getchildren():
                     sql_id = data.get("id")
-                    # print(sql_id)
+                    print(sql_id)
                     sql[sql_id] = data.text
                 table[table_name] = sql
             database[db_name] = table
@@ -202,6 +202,10 @@ def get_url_from_xml(name):
 
     url = '/api/' + '/'.join(url_list)
     print(url)
+    return url
+def get_url_from_excel():
+    url_list = []
+    url_path = os.path.join(proDir,'testFile','case',)
     return url
 
 if __name__ == "__main__":

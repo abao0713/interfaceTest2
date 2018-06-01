@@ -5,32 +5,26 @@ from commonsrc.Log import MyLog
 import readConfig as readConfig
 from commonsrc import configHttp as configHttp
 
-productInfo_xls = common.get_xls("productCase.xlsx", "getProductInfo")
+assigneeInfo_xls = common.get_xls("assignee.xls", "assignee_case")
 localReadConfig = readConfig.ReadConfig()
 localConfigHttp = configHttp.ConfigHttp()
 
 
-@paramunittest.parametrized(*productInfo_xls)
+@paramunittest.parametrized(*assigneeinfo_xls)
 class ProductInfo(unittest.TestCase):
-    def setParameters(self, case_name, method, token, param, data, code, msg):
+    def setParameters(self, case_module, case_num, cookie, token, json_request, json_response,result):
         """
         set params
-        :param case_name:
-        :param method:
-        :param token:
-        :param param:
-        :param result:
-        :param code:
-        :param msg:
+
         :return:
         """
-        self.case_name = str(case_name)
-        self.method = str(method)
+        self. case_module = str( case_module)
+        self.case_num = str(case_num)
+        self.cookie = str(cookie)
         self.token = str(token)
-        self.goodsId = str(param)
-        self.data = str(data)
-        self.code = str(code)
-        self.msg = str(msg)
+        self.json_request = json_request
+        self.codejson_response = json_response
+        self.result = str(result)
         self.response = None
         self.info = None
 
@@ -39,7 +33,7 @@ class ProductInfo(unittest.TestCase):
 
         :return:
         """
-        self.case_name
+        self.case_num
 
     def setUp(self):
         """
@@ -49,14 +43,14 @@ class ProductInfo(unittest.TestCase):
         self.log = MyLog.get_log()
         self.logger = self.log.get_logger()
     #   用例执行前登录服务器
-        common.login()
+        common.get_login_cookies()
 
     def testGetProductInfo(self):
         """
         test body
         :return:
         """
-        # set uel
+        # set url
         self.url = common.get_url_from_xml('read')
 
         localConfigHttp.set_url(self.url)
