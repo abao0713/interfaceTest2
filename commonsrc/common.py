@@ -2,7 +2,10 @@ import requests
 import readConfig as readConfig
 import os
 import xlrd
-from xml.etree import ElementTree as ElementTree
+try:
+    from xml.etree import ElementTree as ElementTree
+except ImportError:
+    from xml.etree import cElementTree as ElementTree
 from commonsrc import configHttp as configHttp
 from commonsrc.Log import MyLog as Log
 import json
@@ -125,6 +128,7 @@ def get_xls(xls_name, sheet_name):
     for i in range(nrows):
         if sheet.row_values(i)[0] != u'case_name':
             cls.append(sheet.row_values(i))
+    print(cls)
     return cls
 
 # ****************************** read SQL xml ********************************
@@ -201,6 +205,4 @@ def get_url_from_xml(name):
     return url
 
 if __name__ == "__main__":
-    get_visitor_token()
-    get_login_cookies()
-    set_login_cookie_to_config()
+    set_xml()
