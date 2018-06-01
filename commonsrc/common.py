@@ -29,8 +29,6 @@ def get_visitor_token():
               "Origin": "https://www.mujin.assignee.com"}
 
     headers["Cookie"] = "ASSIGNEE_JSESSIONID="+localReadConfig.get_headers("cookie_v")
-    print(headers)
-
     response = requests.post(host+"/api/assignee/call/getLoginInfo",data=json.dumps({}),headers=headers,verify=False)
     info = response.json()
     if info["code"] == 0:
@@ -61,7 +59,7 @@ def get_login_cookies():
     info = response.json()
     cookie=response.cookies.get_dict()
     print("登录状态:",info["msg"])
-    print(cookie)
+
     return cookie["ASSIGNEE_JSESSIONID"]
 
 
