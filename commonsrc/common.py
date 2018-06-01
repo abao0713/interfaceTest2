@@ -7,6 +7,7 @@ from commonsrc import configHttp as configHttp
 from commonsrc.Log import MyLog as Log
 import json
 
+
 localReadConfig = readConfig.ReadConfig()
 proDir = readConfig.proDir
 localConfigHttp = configHttp.ConfigHttp()
@@ -27,12 +28,14 @@ def get_visitor_token():
               "Accept": "application/json, text/plain, */*",
               "Origin": "https://www.mujin.assignee.com"}
 
-    headers["Cookie"] = get_login_cookies()
+    headers["Cookie"] = "ASSIGNEE_JSESSIONID="+localReadConfig.get_headers("cookie_v")
+    print(headers)
 
     response = requests.post(host+"/api/assignee/call/getLoginInfo",data=json.dumps({}),headers=headers,verify=False)
     info = response.json()
     if info["code"] == 0:
         token = info["data"]["tokencode"]
+        print("获取token值的状态：",info["msg"])
         logger.debug("Create token:%s" % (token))
         return token
     else:
@@ -58,7 +61,7 @@ def get_login_cookies():
     info = response.json()
     cookie=response.cookies.get_dict()
     print("登录状态:",info["msg"])
-    print(cookie["ASSIGNEE_JSESSIONID"])
+    print(cookie)
     return cookie["ASSIGNEE_JSESSIONID"]
 
 
@@ -200,4 +203,6 @@ def get_url_from_xml(name):
     return url
 
 if __name__ == "__main__":
-    pass
+    get_visitor_token()
+    get_login_cookies()
+    set_login_cookie_to_config()
