@@ -23,14 +23,11 @@ def get_visitor_token():
     """
 
     host = localReadConfig.get_http("url")
-    print(host)
-    headers ={"Host": "www.mujin.assignee.com",
-                "Connection": "keep-alive",
-                "Content-Length": "2",
-                "Accept": "application/json, text/plain, */*",
-                "Origin": "https://www.mujin.assignee.com"
+    headers ={"Host": "www.mujin.assignee.com","Connection": "keep-alive","Content-Length": "2",
+              "Accept": "application/json, text/plain, */*",
+              "Origin": "https://www.mujin.assignee.com"}
 
-              }
+    headers["Cookie"] = get_login_cookies()
 
     response = requests.post(host+"/api/assignee/call/getLoginInfo",data=json.dumps({}),headers=headers,verify=False)
     info = response.json()
@@ -45,7 +42,6 @@ def get_visitor_token():
 
 def get_login_cookies():
     host = localReadConfig.get_http("url")
-    print(host)
     headers = {"Host": "www.mujin.assignee.com",
                "Connection": "keep-alive",
                "Content-Length": "2",
@@ -61,9 +57,9 @@ def get_login_cookies():
                              verify=False)
     info = response.json()
     cookie=response.cookies.get_dict()
-    print(cookie)
     print("登录状态:",info["msg"])
-    return cookie
+    print(cookie["ASSIGNEE_JSESSIONID"])
+    return cookie["ASSIGNEE_JSESSIONID"]
 
 
 def set_visitor_token_to_config():
@@ -73,6 +69,14 @@ def set_visitor_token_to_config():
     """
     token_v = get_visitor_token()
     localReadConfig.set_headers("token_v", token_v)
+
+def set_login_cookie_to_config():
+    """
+    set cookie that created for visitor to config
+    :return:
+    """
+    cookie_v = get_login_cookies()
+    localReadConfig.set_headers("cookie_v", cookie_v)
 
 
 def get_value_from_return_json(json, name1, name2):
@@ -196,6 +200,4 @@ def get_url_from_xml(name):
     return url
 
 if __name__ == "__main__":
-    get_login_cookies()
-    get_visitor_token()
-    set_visitor_token_to_config()
+    pass
