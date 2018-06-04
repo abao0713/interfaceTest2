@@ -8,6 +8,7 @@ from commonsrc import configHttp as configHttp
 assigneeInfo_xls = common.get_xls("assignee.xls", "assignee_num")
 localReadConfig = readConfig.ReadConfig()
 localConfigHttp = configHttp.ConfigHttp()
+proDir = readConfig.proDir
 
 
 @paramunittest.parametrized(*assigneeinfo_xls)
@@ -18,6 +19,7 @@ class ProductInfo(unittest.TestCase):
 
         :return:
         """
+        self.case_name,self.case_method = str(common.compare_data(case_module))
         self.case_num = str(case_num)
         self.cookie = str(cookie)
         self.token = str(token)
@@ -26,6 +28,8 @@ class ProductInfo(unittest.TestCase):
         self.result = str(result)
         self.response = None
         self.info = None
+
+
 
     def description(self):
         """
@@ -50,9 +54,9 @@ class ProductInfo(unittest.TestCase):
         :return:
         """
         # set url
-        self.url = common.get_url_from_xml('read')
+        url = self.case_name
 
-        localConfigHttp.set_url(self.url)
+        localConfigHttp.set_url(url)
         # set params
 
         if self.method == 'get':

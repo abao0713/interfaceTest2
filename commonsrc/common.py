@@ -103,7 +103,7 @@ def compare_data(case_module):
         logger.info("正在执行%s模块的测试"%case_name)
         i = i+1
         j = j+1
-    return case_method
+    return case_name,case_method
 
 
 
