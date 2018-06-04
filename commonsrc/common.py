@@ -81,6 +81,29 @@ def set_login_cookie_to_config():
     """
     cookie_v = get_login_cookies()
     localReadConfig.set_headers("cookie_v", cookie_v)
+#***************************compare_data*************************************8
+def compare_data(case_module):
+
+    # get xls file's path
+    xlsPath = os.path.join(proDir, "testFile", 'case', 'program.xls')
+    print(xlsPath)
+    # open xls file
+    with xlrd.open_workbook(xlsPath) as file:
+        # get sheet by name
+        sheet = file.sheet_by_name('assignee_module')
+        nrows = sheet.nrows
+        ncols = sheet.ncols   #列
+        for i in range(1,nrows):
+            for j in range(ncols):
+                if (case_module == str(sheet.cell(i,j).value)):
+                    print("在第%s行，第%s列"%(i+1,j+1))
+                    break
+        i = i+1
+        j = j+1
+        return i,j
+
+
+
 
 
 def get_value_from_return_json(json, name1, name2):
@@ -119,6 +142,7 @@ def get_xls(xls_name, sheet_name):
     cls = []
     # get xls file's path
     xlsPath = os.path.join(proDir, "testFile", 'case', xls_name)
+    print(xls_name)
     # open xls file
     file = xlrd.open_workbook(xlsPath)
     # get sheet by name
@@ -209,4 +233,5 @@ def get_url_from_excel():
     return url
 
 if __name__ == "__main__":
-    set_xml()
+
+    compare_data('cs-20180601-001')
