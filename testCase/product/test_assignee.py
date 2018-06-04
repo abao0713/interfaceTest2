@@ -5,7 +5,7 @@ from commonsrc.Log import MyLog
 import readConfig as readConfig
 from commonsrc import configHttp as configHttp
 
-assigneeInfo_xls = common.get_xls("assignee.xls", "assignee_case")
+assigneeInfo_xls = common.get_xls("assignee.xls", "assignee_num")
 localReadConfig = readConfig.ReadConfig()
 localConfigHttp = configHttp.ConfigHttp()
 
@@ -18,7 +18,6 @@ class ProductInfo(unittest.TestCase):
 
         :return:
         """
-        self. case_module = str( case_module)
         self.case_num = str(case_num)
         self.cookie = str(cookie)
         self.token = str(token)

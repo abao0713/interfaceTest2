@@ -98,9 +98,12 @@ def compare_data(case_module):
                 if (case_module == str(sheet.cell(i,j).value)):
                     print("在第%s行，第%s列"%(i+1,j+1))
                     break
+        case_name = sheet.cell(i+1,j).value
+        case_method = sheet.cell(i+1,j+2).value
+        logger.info("正在执行%s模块的测试"%case_name)
         i = i+1
         j = j+1
-        return i,j
+    return case_method
 
 
 
