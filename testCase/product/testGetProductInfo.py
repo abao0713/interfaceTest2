@@ -66,11 +66,11 @@ class ProductInfo(unittest.TestCase):
             params = {"goods_id": self.goodsId}
         localConfigHttp.set_params(params)
         # set headers
-        if self.token == '0':
-            token = localReadConfig.get_headers("token_v")
+        if self.token == '' or self.token == 'null':
+            cookie_token = localReadConfig.get_headers("cookie_v")
         else:
-            token = self.token
-        headers = {"token": str(token)}
+            cookie_token = localReadConfig.get_headers("tooken_v")
+        headers = {"Cookie": "ASSIGNEE_JSESSIONID="+str(cookie_token)}
         localConfigHttp.set_headers(headers)
         # get http
         self.response = localConfigHttp.get()

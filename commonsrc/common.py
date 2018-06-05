@@ -98,12 +98,13 @@ def compare_data(case_module):
                 if (case_module == str(sheet.cell(i,j).value)):
                     print("在第%s行，第%s列"%(i+1,j+1))
                     break
-        case_name = sheet.cell(i+1,j).value
+        case_name = sheet.cell(i+1,j-1).value
+        case_url = sheet.cell(i + 1, j ).value
         case_method = sheet.cell(i+1,j+2).value
         logger.info("正在执行%s模块的测试"%case_name)
         i = i+1
         j = j+1
-    return case_name,case_method
+    return case_name,case_url,case_method
 
 
 
@@ -135,6 +136,7 @@ def show_return_msg(response):
     # 可以显示中文
     print("\n请求返回值："+'\n'+json.dumps(json.loads(msg), ensure_ascii=False, sort_keys=True, indent=4))
 # ****************************** read testCase excel ********************************
+
 
 
 def get_xls(xls_name, sheet_name):
@@ -234,6 +236,49 @@ def get_url_from_excel():
     url_list = []
     url_path = os.path.join(proDir,'testFile','case',)
     return url
+#********************************核对结果是否正确******************************
+def checkresult(fix_data, return_data):
+    """  函数递归，判断fix字典是否和return字典的部分内容一样
+
+    :param fix_data: 正确的字典数据
+    :param return_data: 返回的自动数据
+    :return:
+        """
+    judge = False
+    temp_data = dict()
+    for n1 in fix_data:
+        if isinstance(fix_data[n1], dict):  # 如果n1是字典数据，进入递归判断
+            if not checkresult(fix_data[n1], return_data.get(n1)):
+                return False
+
+        elif isinstance(fix_data[n1], list):  # 如果n1是列表数据，进入递归判断
+            for num, n3 in enumerate(fix_data[n1]):
+                for num1, n4 in enumerate(return_data[n1]):
+                    if not return_data[n1]:
+                        raise '{}返回数据为空'.format(n1)
+                    if checkresult(fix_data[n1][num], return_data[n1][num1]):
+                        judge = True  # 当存在相同数据，judge为真，结束该轮循环；否则，由于递归，judge自动为假，
+                        break
+                if not judge:  # 结束子循环后，judge没有为真，则可以判断数据不一致，返回False
+                    return False
+
+        else:
+            if fix_data[n1] == return_data.get(n1):  # 对非字典和列表的数据，进入判断
+                continue
+            else:
+                temp_data['error_data'] = '{}:{} , {}:{}'.format(n1, fix_data[n1], n1,
+                                                                                return_data.get(n1))
+                return False
+    judge = False
+    temp_data['error_data'] = ''
+    return True
+
+
+
+
+
+
+
 
 if __name__ == "__main__":
 

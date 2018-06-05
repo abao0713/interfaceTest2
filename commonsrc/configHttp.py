@@ -91,7 +91,7 @@ class ConfigHttp:
         :return:
         """
         try:
-            response = requests.post(self.url, headers=self.headers, params=self.params, data=self.data, timeout=float(timeout))
+            response = requests.post(self.url, headers=self.headers, params=self.params, data=self.data, verify=False ,timeout=float(timeout))
             # response.raise_for_status()
             return response
         except TimeoutError:
