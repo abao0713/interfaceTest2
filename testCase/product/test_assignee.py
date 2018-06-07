@@ -11,7 +11,7 @@ localConfigHttp = configHttp.ConfigHttp()
 proDir = readConfig.proDir
 
 
-@paramunittest.parametrized(*assigneeinfo_xls)
+@paramunittest.parametrized(*assigneeInfo_xls)
 class ProductInfo(unittest.TestCase):
     def setParameters(self, case_module, case_num, cookie, token, json_request, json_response,result):
         """
@@ -19,7 +19,10 @@ class ProductInfo(unittest.TestCase):
 
         :return:
         """
-        self.case_name,self.case_url,self.case_method = str(common.compare_data(case_module))
+        #self.case_name,self.case_url,self.case_method = common.compare_data(case_module)
+        self.case_name = common.compare_data(case_module).get("case_name")
+        self.case_url = common.compare_data(case_module).get("case_url")
+        self.case_method= common.compare_data(case_module).get("case_method")
         self.case_num = str(case_num)
         self.cookie = str(cookie)
         self.token = str(token)
@@ -74,7 +77,7 @@ class ProductInfo(unittest.TestCase):
             # post http
             self.response = localConfigHttp.post()
             # check result
-            self.checkResult()
+            self.checkresult(json_response,self.response)
 
     def tearDown(self):
         """
@@ -83,7 +86,7 @@ class ProductInfo(unittest.TestCase):
         """
         self.log.build_case_line(self.case_name, self.info['code'], self.info['msg'])
 
-    def checkResult(self):
+    def checkResulta(self):
         self.info = self.response.json()
         common.show_return_msg(self.response)
 

@@ -92,19 +92,28 @@ def compare_data(case_module):
         # get sheet by name
         sheet = file.sheet_by_name('assignee_module')
         nrows = sheet.nrows
+        print(nrows)
         ncols = sheet.ncols   #列
-        for i in range(1,nrows):
-            for j in range(ncols):
+        print(ncols)
+        dic={}
+        for i in range(0,nrows):
+            for j in range(0,ncols):
                 if (case_module == str(sheet.cell(i,j).value)):
                     print("在第%s行，第%s列"%(i+1,j+1))
+                    a = i
+                    b = j
                     break
-        case_name = sheet.cell(i+1,j-1).value
-        case_url = sheet.cell(i + 1, j ).value
-        case_method = sheet.cell(i+1,j+2).value
-        logger.info("正在执行%s模块的测试"%case_name)
-        i = i+1
-        j = j+1
-    return case_name,case_url,case_method
+
+
+        #i = i + 1
+       # i
+        #j = j + 1
+        #j
+        dic["case_name"] = sheet.cell(a,b-2).value
+        dic["case_url"] = sheet.cell(a, b-1 ).value
+        dic["case_method"] = sheet.cell(a,b+1).value
+        logger.info("正在执行%s模块的测试"%dic["case_name"])
+    return dic
 
 
 
@@ -237,7 +246,7 @@ def get_url_from_excel():
     url_path = os.path.join(proDir,'testFile','case',)
     return url
 #********************************核对结果是否正确******************************
-def checkresult(fix_data, return_data):
+def checkresult(json_response, return_data):
     """  函数递归，判断fix字典是否和return字典的部分内容一样
 
     :param fix_data: 正确的字典数据
@@ -246,31 +255,37 @@ def checkresult(fix_data, return_data):
         """
     judge = False
     temp_data = dict()
-    for n1 in fix_data:
-        if isinstance(fix_data[n1], dict):  # 如果n1是字典数据，进入递归判断
-            if not checkresult(fix_data[n1], return_data.get(n1)):
+
+    if isinstance(return_data,dict):
+        return_data = json.loads(return_data)
+
+    for key in json_response.keys():
+        if isinstance(json_response[key], dict):  # 如果key是字典数据，进入递归判断
+            if not checkresult(json_response[key], return_data[key]):
                 return False
 
-        elif isinstance(fix_data[n1], list):  # 如果n1是列表数据，进入递归判断
-            for num, n3 in enumerate(fix_data[n1]):
-                for num1, n4 in enumerate(return_data[n1]):
-                    if not return_data[n1]:
-                        raise '{}返回数据为空'.format(n1)
-                    if checkresult(fix_data[n1][num], return_data[n1][num1]):
+        elif isinstance(json_response[key], list):  # 如果key是数据，进入递归判断
+            for num, n3 in enumerate(json_response[key]):
+                for num1, n4 in enumerate(return_data[n]):
+                    if not return_data[key]:
+                        raise '{}返回数据为空'.format(key)
+                    if checkresult(json_response[key][num], return_data[key][num1]):
                         judge = True  # 当存在相同数据，judge为真，结束该轮循环；否则，由于递归，judge自动为假，
                         break
                 if not judge:  # 结束子循环后，judge没有为真，则可以判断数据不一致，返回False
                     return False
 
         else:
-            if fix_data[n1] == return_data.get(n1):  # 对非字典和列表的数据，进入判断
+            if json_response[key] == return_data["key"]:  # 对非字典和列表的数据，进入判断
                 continue
             else:
-                temp_data['error_data'] = '{}:{} , {}:{}'.format(n1, fix_data[n1], n1,
-                                                                                return_data.get(n1))
+                temp_data['error_data'] = '{}:{} , {}:{}'.format(key, json_response[key], key,
+                                                                                return_data.get(key))
                 return False
-    judge = False
+
+        judge = False
     temp_data['error_data'] = ''
+
     return True
 
 
@@ -281,5 +296,4 @@ def checkresult(fix_data, return_data):
 
 
 if __name__ == "__main__":
-
-    compare_data('cs-20180601-001')
+    compare_data("cs-20180601-002")
