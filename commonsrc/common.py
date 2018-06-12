@@ -164,7 +164,7 @@ def get_xls(xls_name, sheet_name):
     # get one sheet's rows
     nrows = sheet.nrows
     for i in range(nrows):
-        if sheet.row_values(i)[0] != u'case_name':
+        if sheet.row_values(i)[0] != u'case_module':
             cls.append(sheet.row_values(i))
     print(cls)
     return cls
@@ -246,45 +246,110 @@ def get_url_from_excel():
     url_path = os.path.join(proDir,'testFile','case',)
     return url
 #********************************核对结果是否正确******************************
-def checkresult(json_response, return_data):
-    """  函数递归，判断fix字典是否和return字典的部分内容一样
 
-    :param fix_data: 正确的字典数据
-    :param return_data: 返回的自动数据
-    :return:
-        """
-    judge = False
-    temp_data = dict()
 
-    if isinstance(return_data,dict):
-        return_data = json.loads(return_data)
+def checkfail(name1,name2):
+    if name1==name2:
+        print("牛逼")
+    else:
+        print("哈哈")
 
-    for key in json_response.keys():
-        if isinstance(json_response[key], dict):  # 如果key是字典数据，进入递归判断
-            if not checkresult(json_response[key], return_data[key]):
-                return False
 
-        elif isinstance(json_response[key], list):  # 如果key是数据，进入递归判断
-            for num, n3 in enumerate(json_response[key]):
-                for num1, n4 in enumerate(return_data[n]):
-                    if not return_data[key]:
-                        raise '{}返回数据为空'.format(key)
-                    if checkresult(json_response[key][num], return_data[key][num1]):
-                        judge = True  # 当存在相同数据，judge为真，结束该轮循环；否则，由于递归，judge自动为假，
-                        break
-                if not judge:  # 结束子循环后，judge没有为真，则可以判断数据不一致，返回False
+def check_result(response={}, hope_response={}, value=0):
+
+    # 当value=0时只校验key
+
+    if value == 0:
+
+        for n1 in hope_response:
+
+            # print "n1:",n1
+
+            # 如果值是字典类型
+
+            if isinstance(hope_response[n1], dict):
+
+                # print "dict"
+
+                if not check_result(response=response.get(n1),hope_response=hope_response[n1]):
+                    checkfail(response=response.get(n1), hope=hope_response[n1])
+
                     return False
 
-        else:
-            if json_response[key] == return_data["key"]:  # 对非字典和列表的数据，进入判断
-                continue
-            else:
-                temp_data['error_data'] = '{}:{} , {}:{}'.format(key, json_response[key], key,
-                                                                                return_data.get(key))
-                return False
+                    #print('{},{}'.format(hope_response[n1], response[n1]))
 
-        judge = False
-    temp_data['error_data'] = ''
+            elif isinstance(hope_response[n1], list):
+
+                # print "list"
+
+                for hope_index, hope_listValue in enumerate(hope_response[n1]):
+
+                    # print "hope_index:",hope_index
+
+                    # print "hope_listValue:",hope_listValue
+
+                    for response_index, response_listValue in enumerate(response[n1]):
+
+                        # print "response_index:",response_index
+
+                        # print "response_listValue:",response_listValue
+
+                        if isinstance(hope_listValue, dict):
+
+                            check_result(response=response[n1][response_index],
+                                                                          hope_response=hope_response[n1][
+                                                                              response_index])
+
+                        else:
+
+                            try:
+
+                                print("hope_listValue:", hope_listValue, type(hope_listValue))
+
+                                print("response_listValue:", response_listValue, type(response_listValue))
+
+                                assert_that(hope_response[n1][hope_index]).is_equal_to(response[n1][hope_index])
+
+                            except AssertionError as ex:
+
+                                checkfail(response=response[n1][hope_index],hope=hope_response[n1][hope_index])
+
+                                raise Exception('Expected <%s> to be not equal to <%s>, but was not.' % (
+                                hope_response[n1][hope_index], response[n1][hope_index]))
+
+            else:
+
+                # 当时sring类型
+
+                try:
+
+                    assert_that(response).contains_key(n1)
+
+                    print("n1:", n1)
+
+                except (AssertionError, TypeError) as ex:
+
+                    checkfail(response=response, hope=n1)
+
+                    raise Exception('%s <%s> is not dict-like: missing keys()' % (response, n1))
+
+
+
+
+
+    # 校验key和value
+
+    else:
+
+        try:
+
+            assert_that(hope_response).is_equal_to(response)
+
+        except AssertionError as ex:
+
+            MailFile().checkfail(response=response, hope=hope_response)
+
+            raise Exception('Expected <%s> to be not equal to <%s>, but was not.' % (response, hope_response))
 
     return True
 
@@ -292,8 +357,7 @@ def checkresult(json_response, return_data):
 
 
 
-
-
-
 if __name__ == "__main__":
-    compare_data("cs-20180601-002")
+    response={"data":1,"code":0,"msg":"操作成功"}
+    hope_response ={"data":1,"code":0,"msg":"操作成功"}
+    check_result(response, hope_response, value=0)

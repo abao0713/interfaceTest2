@@ -31,6 +31,7 @@ class ConfigHttp:
         """
         self.url = scheme+'://'+host+url
 
+
     def set_headers(self, header):
         """
         set headers
@@ -39,6 +40,7 @@ class ConfigHttp:
         """
         self.headers = header
 
+
     def set_params(self, param):
         """
         set params
@@ -46,6 +48,7 @@ class ConfigHttp:
         :return:
         """
         self.params = param
+
 
     def set_data(self, data):
         """
