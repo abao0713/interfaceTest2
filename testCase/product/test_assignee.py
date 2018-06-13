@@ -78,20 +78,15 @@ class ProductInfo(unittest.TestCase):
             # get http
             self.response = localConfigHttp.get()
             # check result
-            print(self.response)
+            common.check_result(self.response,self.json_response)
 
         else:
             # post http
             self.response = localConfigHttp.post()
             print(self.response.json())
             # check result
-            try:
-
-                assert(self.response.json()==self.json_response)
-                print("xiangdneg ")
-
-            except AssertionError as ex:
-                print(ex)
+            common.check_result(self.response.json(), self.json_response)
+            #
 
     def tearDown(self):
         """

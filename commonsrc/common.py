@@ -2,6 +2,7 @@ import requests
 import readConfig as readConfig
 import os
 import xlrd
+
 try:
     from xml.etree import ElementTree as ElementTree
 except ImportError:
@@ -323,13 +324,15 @@ def check_result(response={}, hope_response={}, value=0):
 
                 try:
 
-                    assert_that(response).contains_key(n1)
+                    #assert_that(response).contains_key(n1)
+                    assert  n1 in response
 
                     print("n1:", n1)
 
+
                 except (AssertionError, TypeError) as ex:
 
-                    checkfail(response=response, hope=n1)
+                    checkfail(name1=response, name2=n1)
 
                     raise Exception('%s <%s> is not dict-like: missing keys()' % (response, n1))
 
@@ -342,8 +345,9 @@ def check_result(response={}, hope_response={}, value=0):
     else:
 
         try:
+            assertEqual(hope_response, response)
 
-            assert_that(hope_response).is_equal_to(response)
+            #assert_that(hope_response).is_equal_to(response)
 
         except AssertionError as ex:
 
@@ -358,6 +362,8 @@ def check_result(response={}, hope_response={}, value=0):
 
 
 if __name__ == "__main__":
-    response={"data":1,"code":0,"msg":"操作成功"}
-    hope_response ={"data":1,"code":0,"msg":"操作成功"}
+    a={"data":{"username":"8888","tokencode":"cfb63e26ae2477b5cd8a38db326faa06","extension":"8888"},"code":0,"msg":"操作成功"}
+    response =a
+    b={"data":{"username":"8888","tokencode":"cfb63e26ae2477b5cd8a38db326faa06","extension":"8888"},"code":0,"msg":"操作成功"}
+    hope_response = b
     check_result(response, hope_response, value=0)
