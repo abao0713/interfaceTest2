@@ -1,5 +1,6 @@
 import unittest
 import paramunittest
+import json
 from commonsrc import common
 from commonsrc.Log import MyLog
 import readConfig as readConfig
@@ -30,7 +31,7 @@ class ProductInfo(unittest.TestCase):
         self.json_request = json_request
         self.json_response = json_response
         self.result = str(result)
-        self.response = None
+        self.return_data = None
         self.info = None
 
 
@@ -65,7 +66,7 @@ class ProductInfo(unittest.TestCase):
         case_method= common.compare_data(self.case_module).get("case_method")
 
         localConfigHttp.set_url(self.case_url)
-        localConfigHttp.set_params(self.json_request)
+        localConfigHttp.set_data(self.json_request)
 
         # set headers
         if self.token == '' or self.token == 'null':
@@ -77,15 +78,18 @@ class ProductInfo(unittest.TestCase):
         if case_method == 'get':
             # get http
             self.response = localConfigHttp.get()
+            self.info = json.loads(self.json_response)
+            print(self.info)
             # check result
-            common.check_result(self.response,self.json_response)
+            common.check_result(self.return_data, self.info)
 
         else:
             # post http
-            self.response = localConfigHttp.post()
-            print(self.response.json())
+            self.return_data = localConfigHttp.post()
+            self.info = json.loads(self.json_response)
+            print(self.info)
             # check result
-            common.check_result(self.response.json(), self.json_response)
+            common.check_result(self.return_data, self.info)
             #
 
     def tearDown(self):

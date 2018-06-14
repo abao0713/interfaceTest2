@@ -78,9 +78,9 @@ class ConfigHttp:
         :return:
         """
         try:
-            response = requests.get(self.url, headers=self.headers, params=self.params, timeout=float(timeout))
+            return_data = requests.get(self.url, headers=self.headers, params=self.params, timeout=float(timeout))
             # response.raise_for_status()
-            return response
+            return return_data
         except TimeoutError:
             self.logger.error("Time out!")
             return None
@@ -94,9 +94,12 @@ class ConfigHttp:
         :return:
         """
         try:
-            response = requests.post(self.url, headers=self.headers, params=self.params, data=self.data, verify=False ,timeout=float(timeout))
+            return_data = requests.post(self.url, headers=self.headers,  data=self.data, verify=False ,timeout=float(timeout))
             # response.raise_for_status()
-            return response
+            info = return_data.json()
+
+            return info
+
         except TimeoutError:
             self.logger.error("Time out!")
             return None

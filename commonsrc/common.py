@@ -1,6 +1,7 @@
 import requests
 import readConfig as readConfig
 import os
+from assertpy import assert_that
 import xlrd
 
 try:
@@ -273,7 +274,7 @@ def check_result(response={}, hope_response={}, value=0):
                 # print "dict"
 
                 if not check_result(response=response.get(n1),hope_response=hope_response[n1]):
-                    checkfail(response=response.get(n1), hope=hope_response[n1])
+                    checkfail(response.get(n1), hope_response[n1])
 
                     return False
 
@@ -285,15 +286,15 @@ def check_result(response={}, hope_response={}, value=0):
 
                 for hope_index, hope_listValue in enumerate(hope_response[n1]):
 
-                    # print "hope_index:",hope_index
+                    print ("hope_index:",hope_index)
 
-                    # print "hope_listValue:",hope_listValue
+                    print ("hope_listValue:",hope_listValue)
 
                     for response_index, response_listValue in enumerate(response[n1]):
 
-                        # print "response_index:",response_index
+                        print ("response_index:",response_index)
 
-                        # print "response_listValue:",response_listValue
+                        print ("response_listValue:",response_listValue)
 
                         if isinstance(hope_listValue, dict):
 
@@ -345,13 +346,14 @@ def check_result(response={}, hope_response={}, value=0):
     else:
 
         try:
-            assertEqual(hope_response, response)
 
-            #assert_that(hope_response).is_equal_to(response)
+
+
+            assert_that(hope_response).is_equal_to(response)
 
         except AssertionError as ex:
 
-            MailFile().checkfail(response=response, hope=hope_response)
+            checkfail(response, hope_response)
 
             raise Exception('Expected <%s> to be not equal to <%s>, but was not.' % (response, hope_response))
 
@@ -362,8 +364,6 @@ def check_result(response={}, hope_response={}, value=0):
 
 
 if __name__ == "__main__":
-    a={"data":{"username":"8888","tokencode":"cfb63e26ae2477b5cd8a38db326faa06","extension":"8888"},"code":0,"msg":"操作成功"}
-    response =a
-    b={"data":{"username":"8888","tokencode":"cfb63e26ae2477b5cd8a38db326faa06","extension":"8888"},"code":0,"msg":"操作成功"}
-    hope_response = b
-    check_result(response, hope_response, value=0)
+    a={'data': [{'collectionMarkId': 413, 'callTime': '2018-06-12 13:41:37', 'callDuration': '5分钟', 'collector': '袁保军', 'callName': '麒覆盖', 'relation': '本人', 'callPhone': '13790558315', 'phoneStatus': '有效', 'phoneAnswerStatus': '未知', 'caseStatus': '承诺还款', 'collectionRemark': '发生过第三代的地方', 'markDetail': {'callName': '麒覆盖', 'callPhone': '13790558315', 'contactRelation': '本人', 'createTime': '2018-06-12 13:41:37', 'label': ['有效', '正常接听', '承诺还款', '态度好'], 'addContact': [], 'promiseAmount': '562.00', 'reliefAmount': '200.00', 'promiseRepaymentTime': '2018-06-14 00:00:00', 'collectionRemark': '发生过第三代的地方'}}], 'code': 0, 'msg': '操作成功'}
+    b={'data': [{'collectionMarkId': 423, 'callTime': '2018-06-12 13:41:37', 'callDuration': '5分钟', 'collector': '袁保军', 'callName': '麒覆盖', 'relation': '本人', 'callPhone': '13790558315', 'phoneStatus': '有效', 'phoneAnswerStatus': '未知', 'caseStatus': '承诺还款', 'collectionRemark': '发生过第三代的地方', 'markDetail': {'callName': '麒覆盖', 'callPhone': '13790558315', 'contactRelation': '本人', 'createTime': '2018-06-12 13:41:37', 'label': ['有效', '正常接听', '承诺还款', '态度好'], 'addContact': [], 'promiseAmount': '562.00', 'reliefAmount': '200.00', 'promiseRepaymentTime': '2018-06-14 00:00:00', 'collectionRemark': '发生过第三代的地方'}}], 'code': 0, 'msg': '操作成功'}
+    check_result(a, b, value=0)
