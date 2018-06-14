@@ -94,6 +94,7 @@ class ConfigHttp:
         :return:
         """
         try:
+
             return_data = requests.post(self.url, headers=self.headers,  data=self.data, verify=False ,timeout=float(timeout))
             # response.raise_for_status()
             info = return_data.json()

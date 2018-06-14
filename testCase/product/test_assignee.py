@@ -42,7 +42,7 @@ class ProductInfo(unittest.TestCase):
         :return:
         """
         self.case_num
-        common.get_login_cookies()
+
 
     def setUp(self):
         """
@@ -53,7 +53,7 @@ class ProductInfo(unittest.TestCase):
         self.logger = self.log.get_logger()
     #   用例执行前登录服务器
         common.get_login_cookies()
-
+        common.set_login_cookie_to_config()
     def testGetProductInfo(self):
         """
         test body
@@ -74,7 +74,9 @@ class ProductInfo(unittest.TestCase):
         else:
             cookie_token = localReadConfig.get_headers("token_v")
         headers = {"Cookie": "ASSIGNEE_JSESSIONID="+str(cookie_token)}
+        headers["Content-Type"] = "charset=UTF-8"
         localConfigHttp.set_headers(headers)
+
         if case_method == 'get':
             # get http
             self.response = localConfigHttp.get()
@@ -85,12 +87,17 @@ class ProductInfo(unittest.TestCase):
 
         else:
             # post http
+            #response.setContentType("charset=utf-8”)
             self.return_data = localConfigHttp.post()
-            self.info = json.loads(self.json_response)
-            print(self.info)
-            # check result
-            common.check_result(self.return_data, self.info)
-            #
+            if self.return_data["code"] == 0:
+                self.info = json.loads(self.json_response)
+                print(self.info)
+                # check result
+                common.check_result(self.return_data, self.info)
+                #
+            else:
+                msg = self.return_data["msg"]
+                print("接口结果异常：",msg)
 
     def tearDown(self):
         """
@@ -101,9 +108,9 @@ class ProductInfo(unittest.TestCase):
 
 
 
-
-
-
 if __name__ == '__main__':
-    a=ProductInfo(unittest.TestCase)
+    a = ProductInfo()
     a.testGetProductInfo()
+
+
+

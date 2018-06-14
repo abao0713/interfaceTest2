@@ -18,7 +18,7 @@ class AllTest:
         self.caseListFile = os.path.join(readConfig.proDir, "caselist.txt")
         self.caseFile = os.path.join(readConfig.proDir, "testCase")
 
-        print(self.caseFile)
+        #print(self.caseFile)
 
         # self.caseFile = None
         self.caseList = []
@@ -42,13 +42,14 @@ class AllTest:
         :return:
         """
         self.set_case_list()
+        print(self.set_case_list())
         test_suite = unittest.TestSuite()
         suite_module = []
 
         for case in self.caseList:
             case_name = case.split("/")[-1]
-            print(case_name+".py")
-            discover = unittest.defaultTestLoader.discover(self.caseFile, pattern=case_name + '.py', top_level_dir=None)
+            #print(case_name+".py")
+            discover = unittest.defaultTestLoader.discover(self.caseFile+'\\product', pattern=case_name + '.py', top_level_dir=None)
             suite_module.append(discover)
 
         if len(suite_module) > 0:

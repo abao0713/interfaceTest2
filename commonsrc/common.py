@@ -286,15 +286,15 @@ def check_result(response={}, hope_response={}, value=0):
 
                 for hope_index, hope_listValue in enumerate(hope_response[n1]):
 
-                    print ("hope_index:",hope_index)
+                    #print ("hope_index:",hope_index)
 
-                    print ("hope_listValue:",hope_listValue)
+                    #print ("hope_listValue:",hope_listValue)
 
                     for response_index, response_listValue in enumerate(response[n1]):
 
-                        print ("response_index:",response_index)
+                        #print ("response_index:",response_index)
 
-                        print ("response_listValue:",response_listValue)
+                        #print ("response_listValue:",response_listValue)
 
                         if isinstance(hope_listValue, dict):
 
