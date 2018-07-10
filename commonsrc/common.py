@@ -1,8 +1,10 @@
 import requests
 import readConfig as readConfig
 import os
+import yaml
 from assertpy import assert_that
 import xlrd
+import re
 
 try:
     from xml.etree import ElementTree as ElementTree
@@ -170,6 +172,32 @@ def get_xls(xls_name, sheet_name):
             cls.append(sheet.row_values(i))
     print(cls)
     return cls
+def get_case_yaml(case_yaml):
+    """
+    accept yaml data
+    :param a:
+    :param b:
+    :return:
+    """
+    yaml_data=[]
+    xlsPath = os.path.join(proDir, "testFile", case_yaml)
+    print(xlsPath)
+    # open xls file
+    with open(xlsPath,'r',encoding="UTF-8") as file:
+
+        try:
+            alldata = yaml.load(file)
+            for data in alldata:
+                if "request" in data:
+                    #print(alldata[data])
+                    yaml_data.append(alldata[data])
+
+        except:
+            print("hhhhh")
+
+        print(yaml_data)
+
+    return yaml_data
 
 # ****************************** read SQL xml ********************************
 database = {}
@@ -364,6 +392,4 @@ def check_result(response={}, hope_response={}, value=0):
 
 
 if __name__ == "__main__":
-    a={'data': [{'collectionMarkId': 413, 'callTime': '2018-06-12 13:41:37', 'callDuration': '5分钟', 'collector': '袁保军', 'callName': '麒覆盖', 'relation': '本人', 'callPhone': '13790558315', 'phoneStatus': '有效', 'phoneAnswerStatus': '未知', 'caseStatus': '承诺还款', 'collectionRemark': '发生过第三代的地方', 'markDetail': {'callName': '麒覆盖', 'callPhone': '13790558315', 'contactRelation': '本人', 'createTime': '2018-06-12 13:41:37', 'label': ['有效', '正常接听', '承诺还款', '态度好'], 'addContact': [], 'promiseAmount': '562.00', 'reliefAmount': '200.00', 'promiseRepaymentTime': '2018-06-14 00:00:00', 'collectionRemark': '发生过第三代的地方'}}], 'code': 0, 'msg': '操作成功'}
-    b={'data': [{'collectionMarkId': 423, 'callTime': '2018-06-12 13:41:37', 'callDuration': '5分钟', 'collector': '袁保军', 'callName': '麒覆盖', 'relation': '本人', 'callPhone': '13790558315', 'phoneStatus': '有效', 'phoneAnswerStatus': '未知', 'caseStatus': '承诺还款', 'collectionRemark': '发生过第三代的地方', 'markDetail': {'callName': '麒覆盖', 'callPhone': '13790558315', 'contactRelation': '本人', 'createTime': '2018-06-12 13:41:37', 'label': ['有效', '正常接听', '承诺还款', '态度好'], 'addContact': [], 'promiseAmount': '562.00', 'reliefAmount': '200.00', 'promiseRepaymentTime': '2018-06-14 00:00:00', 'collectionRemark': '发生过第三代的地方'}}], 'code': 0, 'msg': '操作成功'}
-    check_result(a, b, value=0)
+    get_case_yaml("assignee.yaml")

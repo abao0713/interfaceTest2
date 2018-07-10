@@ -74,7 +74,7 @@ class ProductInfo(unittest.TestCase):
         else:
             cookie_token = localReadConfig.get_headers("token_v")
         headers = {"Cookie": "ASSIGNEE_JSESSIONID="+str(cookie_token)}
-        headers["Content-Type"] = "charset=UTF-8"
+        headers["Content-Type"] = "application/json;charset=UTF-8"
         localConfigHttp.set_headers(headers)
 
         if case_method == 'get':
@@ -97,7 +97,7 @@ class ProductInfo(unittest.TestCase):
                 #
             else:
                 msg = self.return_data["msg"]
-                print("接口结果异常：",msg)
+                logger.debug("接口结果异常：",msg)
 
     def tearDown(self):
         """
