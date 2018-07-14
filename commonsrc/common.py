@@ -393,3 +393,4 @@ def check_result(response={}, hope_response={}, value=0):
 
 if __name__ == "__main__":
     get_case_yaml("assignee.yaml")
+    print("526")
