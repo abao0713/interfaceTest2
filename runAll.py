@@ -16,9 +16,10 @@ class AllTest:
         resultPath = log.get_report_path()
         on_off = localReadConfig.get_email("on_off")
         self.caseListFile = os.path.join(readConfig.proDir, "caselist.txt")
+        #accept file test
         self.caseFile = os.path.join(readConfig.proDir, "testCase")
 
-        #print(self.caseFile)
+        print(self.caseFile)
 
         # self.caseFile = None
         self.caseList = []
@@ -29,37 +30,48 @@ class AllTest:
         set case list
         :return:
         """
-        fb = open(self.caseListFile)
-        for value in fb.readlines():
-            data = str(value)
-            if data != '' and not data.startswith("#"):
-                self.caseList.append(data.replace("\n", ""))
-        fb.close()
+        try:
+
+            fb = open(self.caseListFile)
+            for value in fb.readlines():
+                data = str(value)
+                if data != '' and not data.startswith("#"):
+                    self.caseList.append(data.replace("\n", ""))
+            fb.close()
+
+        except:
+            logger.info("缺少文件")
+        return self.caseList
 
     def set_case_suite(self):
         """
         set case suite
         :return:
         """
-        self.set_case_list()
-        print(self.set_case_list())
+        if self.set_case_list() == None:
+            logger.info("this caseList,s file is none")
+        else:
+            self.set_case_list()
+
         test_suite = unittest.TestSuite()
         suite_module = []
 
         for case in self.caseList:
             case_name = case.split("/")[-1]
-            #print(case_name+".py")
+            print(self.caseFile + '\\product')
+
             discover = unittest.defaultTestLoader.discover(self.caseFile+'\\product', pattern=case_name + '.py', top_level_dir=None)
             suite_module.append(discover)
 
         if len(suite_module) > 0:
-
+            print(suite_module)
             for suite in suite_module:
                 for test_name in suite:
                     test_suite.addTest(test_name)
         else:
+            logger.info("not test case find")
             return None
-
+        print(test_suite)
         return test_suite
 
     def run(self):
