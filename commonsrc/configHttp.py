@@ -29,7 +29,8 @@ class ConfigHttp:
         :param: interface url
         :return:
         """
-        self.url = scheme+'://'+host+url
+        #self.url = scheme+'://'+host+url
+        self.url = url
 
 
     def set_headers(self, header):

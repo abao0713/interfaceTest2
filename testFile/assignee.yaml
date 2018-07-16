@@ -1,6 +1,7 @@
-name0: login
+
 request0:
-    url: https://www.mujin.common.private.assignee.com/api/assignee/collectionMark/saveCollectionMark
+    name: login
+    url: https://www.mujin.assignee.com/api/assignee/collectionMark/saveCollectionMark
     method: POST
     headers:
         Content-Type: application/json
@@ -10,34 +11,31 @@ request0:
         Accept-Language: zh-CN,zh;q=0.8
         
     json:
-        companyOrgSign: aprivate
-        operatorId: 133
-        caseId: 2570
-        caseCode: 1800001004
-        caseManageId: 144
-        callName: 而非
-        callPhone: 18636345663
-        caseCode: "1800004195"
-        caseId: 2570
+        companyOrgSign: a
+        operatorId: 20
+        callName: 李们华
+        callPhone: 13686821736
+        caseCode: "1800004491"
+        caseId: 2545
         caseLabel: ""
-        caseManageId: 872
-        collectionRemark: "未知"
+        caseManageId: 808
+        collectionRemark: "ybj5555256"
         collectionTips: "未知"
-        contactAttitude: ["未知"]
+        contactAttitude: ["骂人"]
         contactRelation: "本人"
         isRelevancy: 0
         phoneAnswerStatus: 1
-        phoneLabel: "设限"
+        phoneLabel: "无人接听"
         phoneStatus: "无效"
-        reminderType: 1
-        repaymentIntention: ["未知123"]
+        repaymentIntention: ["无意还款"]
         source: ""
         strongId: ""
-    validators0:
+    result:
         - {"check": "status_code","expeted":200}
-name1: login
+
 request1:
-    url: https://www.mujin.common.private.assignee.com/api/assignee/collectionMark/saveCollectionMark
+    name: login
+    url: https://www.mujin.assignee.com/api/assignee/collectionMark/saveCollectionMark
     method: POST
     headers:
         Content-Type: application/json
@@ -47,33 +45,31 @@ request1:
         Accept-Language: zh-CN,zh;q=0.8
         
     json:
-        companyOrgSign: aprivate
-        operatorId: 133
-        caseId: 2570
-        caseCode: 1800001004
-        caseManageId: 144
-        callName: 而非
-        callPhone: 18636345663
-        caseCode: "1800004195"
-        caseId: 2570
+        companyOrgSign: a
+        operatorId: 20
+        callName: 李们华
+        callPhone: 13686821736
+        caseCode: "1800004491"
+        caseId: 2545
         caseLabel: ""
-        caseManageId: 872
-        collectionRemark: "未知"
+        caseManageId: 808
+        collectionRemark: "ybj5555256"
         collectionTips: "未知"
-        contactAttitude: ["未知"]
+        contactAttitude: ["骂人"]
         contactRelation: "本人"
         isRelevancy: 0
         phoneAnswerStatus: 1
-        phoneLabel: "设限"
+        phoneLabel: "无人接听"
         phoneStatus: "无效"
-        reminderType: 1
-        repaymentIntention: ["未知123"]
+        repaymentIntention: ["无意还款"]
         source: ""
         strongId: ""
-    validators1:
+    result:
         - {"check": "status_code","expeted":200}
-name2: login
+
+
 request2:
+    name: login
     url: https://www.mujin.common.private.assignee.com/api/assignee/collectionMark/saveCollectionMark
     method: POST
     headers:
@@ -87,7 +83,7 @@ request2:
         companyOrgSign: aprivate
         operatorId: 133
         caseId: 2570
-        caseCode: 1800001004
+        caseCode: 1800004195
         caseManageId: 144
         callName: 而非
         callPhone: 18636345663
@@ -107,10 +103,11 @@ request2:
         repaymentIntention: ["未知123"]
         source: ""
         strongId: ""
-    validators2:
+    result:
         - {"check": "status_code","expeted":200}
-name3: login
+
 request3:
+    name: login
     url: https://www.mujin.common.private.assignee.com/api/assignee/collectionMark/saveCollectionMark
     method: POST
     headers:
@@ -144,10 +141,11 @@ request3:
         repaymentIntention: ["未知123"]
         source: ""
         strongId: ""
-    validators3:
+    result:
         - {"check": "status_code","expeted":200}
-name4: login
+
 request4:
+    name: login
     url: https://www.mujin.common.private.assignee.com/api/assignee/collectionMark/saveCollectionMark
     method: POST
     headers:
@@ -181,10 +179,11 @@ request4:
         repaymentIntention: ["未知123"]
         source: ""
         strongId: ""
-    validators4:
+    result:
         - {"check": "status_code","expeted":200}
-name5: login
+
 request5:
+    name: login
     url: https://www.mujin.common.private.assignee.com/api/assignee/collectionMark/saveCollectionMark
     method: POST
     headers:
@@ -218,10 +217,11 @@ request5:
         repaymentIntention: ["未知123"]
         source: ""
         strongId: ""
-    validators5:
+    result:
         - {"check": "status_code","expeted":200}
-name6: login
+
 request6:
+    name: login
     url: https://www.mujin.common.private.assignee.com/api/assignee/collectionMark/saveCollectionMark
     method: POST
     headers:
@@ -255,42 +255,5 @@ request6:
         repaymentIntention: ["未知123"]
         source: ""
         strongId: ""
-    validators6:
-        - {"check": "status_code","expeted":200}
-name7: login
-request7:
-    url: https://www.mujin.common.private.assignee.com/api/assignee/collectionMark/saveCollectionMark
-    method: POST
-    headers:
-        Content-Type: application/json
-        X-Requested-With: XMLHttpRequest
-        User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
-        Accept-Encoding: gzip, deflate, sdch
-        Accept-Language: zh-CN,zh;q=0.8
-        
-    json:
-        companyOrgSign: aprivate
-        operatorId: 133
-        caseId: 2570
-        caseCode: 1800001004
-        caseManageId: 144
-        callName: 而非
-        callPhone: 18636345663
-        caseCode: "1800004195"
-        caseId: 2570
-        caseLabel: ""
-        caseManageId: 872
-        collectionRemark: "未知"
-        collectionTips: "未知"
-        contactAttitude: ["未知"]
-        contactRelation: "本人"
-        isRelevancy: 0
-        phoneAnswerStatus: 1
-        phoneLabel: "设限"
-        phoneStatus: "无效"
-        reminderType: 1
-        repaymentIntention: ["未知123"]
-        source: ""
-        strongId: ""
-    validators7:
+    result:
         - {"check": "status_code","expeted":200}
