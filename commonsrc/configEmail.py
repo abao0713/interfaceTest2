@@ -12,6 +12,7 @@ from commonsrc.Log import MyLog
 import zipfile
 import glob
 
+
 localReadConfig = readConfig.ReadConfig()
 
 
@@ -119,7 +120,8 @@ class Email:
         :return:
         """
         reportpath = self.log.get_report_path()
-        if os.path.isfile(reportpath) and not os.stat(reportpath) == 0:
+        #reportpath = unicode(reportpath, "utf8")
+        if os.path.isfile(os.path.join(reportpath)) and not os.stat(reportpath) == 0:
             return True
         else:
             return False
@@ -145,7 +147,7 @@ class Email:
 
 class MyEmail:
     email = None
-    mutex = threading.Lock()
+    mutex = threading.RLock()
 
     def __init__(self):
         pass
@@ -161,4 +163,6 @@ class MyEmail:
 
 
 if __name__ == "__main__":
-    email = MyEmail.get_email()
+    email = Email()
+    email.check_file()
+    email.config_file()

@@ -65,15 +65,17 @@ class ProductInfo(unittest.TestCase):
 
         if self.method == 'get':
             # get http
+            localConfigHttp.set_params(params)
             self.response = localConfigHttp.get()
-            self.info = json.loads(self.json_response)
+            self.info = json.loads(self.json)
             print(self.info)
             # check result
-            common.check_result(self.return_data, self.info)
+            common.check_result(self.result, self.info)
 
         else:
             # post http
             #response.setContentType("charset=utf-8”)
+            localConfigHttp.set_data(self.json)
             self.return_data = localConfigHttp.post()
             if self.return_data["code"] == 0:
                 self.info = json.loads(self.json)
