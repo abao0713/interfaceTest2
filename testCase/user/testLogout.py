@@ -4,7 +4,7 @@ import readConfig as ReadConfig
 from commonsrc.Log import MyLog
 from commonsrc import common
 from commonsrc import configHttp
-from commonsrc import businessCommon
+from commonsrc import login_status
 
 localReadConfig = ReadConfig.ReadConfig()
 localConfigHttp = configHttp.ConfigHttp()
@@ -49,7 +49,7 @@ class Logout(unittest.TestCase):
         self.log = MyLog.get_log()
         self.logger = self.log.get_logger()
         # login
-        self.login_token = businessCommon.login()
+        self.login_token = login_status.login()
 
     def testLogout(self):
         """

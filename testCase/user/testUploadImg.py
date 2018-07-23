@@ -4,7 +4,7 @@ import paramunittest
 import readConfig as readConfig
 from commonsrc import common
 from commonsrc import configHttp
-from commonsrc import businessCommon
+from commonsrc import login_status
 from commonsrc.Log import MyLog
 
 localUploadImg_xls = common.get_xls("userCase.xlsx", "uploadImg")
@@ -53,7 +53,7 @@ class UploadImg(unittest.TestCase):
         """
         self.log = MyLog.get_log()
         self.logger = self.log.get_logger()
-        self.login_token = businessCommon.login()
+        self.login_token = login_status.login()
 
     def testUploadImg(self):
         """
@@ -93,7 +93,7 @@ class UploadImg(unittest.TestCase):
         :return:
         """
         # logout
-        businessCommon.logout(self.login_token)
+        login_status.logout(self.login_token)
         self.log.build_case_line(self.case_name, self.info['code'], self.info['msg'])
 
     def checkResult(self):

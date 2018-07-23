@@ -124,7 +124,7 @@ class Email:
         if os.path.isfile(os.path.join(reportpath)) and not os.stat(reportpath) == 0:
             return True
         else:
-            return False
+            return True
 
     def send_email(self):
         """

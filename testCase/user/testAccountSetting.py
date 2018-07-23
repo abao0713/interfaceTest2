@@ -4,7 +4,7 @@ import readConfig as readConfig
 from commonsrc import common
 from commonsrc import configHttp
 from commonsrc.Log import MyLog
-from commonsrc import businessCommon
+from commonsrc import login_status
 
 localReadConfig = readConfig.ReadConfig()
 localConfigHttp = configHttp.ConfigHttp()
@@ -61,7 +61,7 @@ class AccountSetting(unittest.TestCase):
         self.log = MyLog.get_log()
         self.logger = self.log.get_logger()
         # login
-        self.login_token = businessCommon.login()
+        self.login_token = login_status.login()
 
     def testAccountSetting(self):
         """
@@ -100,7 +100,7 @@ class AccountSetting(unittest.TestCase):
         :return:
         """
         # logout
-        businessCommon.logout(self.login_token)
+        login_status.logout(self.login_token)
         self.log.build_case_line(self.case_name, self.info['code'], self.info['msg'])
 
     def checkResult(self):

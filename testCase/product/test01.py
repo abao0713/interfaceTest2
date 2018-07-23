@@ -55,6 +55,10 @@ class ProductInfo(unittest.TestCase):
         test body
         :return:
         """
+
+
+
+
         # set url
         localConfigHttp.set_url(self.url)
         # set headers
@@ -85,7 +89,7 @@ class ProductInfo(unittest.TestCase):
                 #
             else:
                 msg = self.return_data["msg"]
-                logger.debug("接口结果异常：",msg)
+                print("接口结果异常：",msg)
 
     def tearDown(self):
         """

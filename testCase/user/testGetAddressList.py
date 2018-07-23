@@ -4,7 +4,7 @@ import readConfig as readConfig
 from commonsrc import Log as Log
 from commonsrc import common
 from commonsrc import configHttp as ConfigHttp
-from commonsrc import businessCommon
+from commonsrc import login_status
 
 addressList_xls = common.get_xls("userCase.xlsx", "getAddressList")
 localReadConfig = readConfig.ReadConfig()
@@ -47,7 +47,7 @@ class GetAddressList(unittest.TestCase):
         """
         self.log = Log.MyLog.get_log()
         self.logger = self.log.get_logger()
-        self.login_token = businessCommon.login()
+        self.login_token = login_status.login()
 
     def testGetAddressList(self):
         """
@@ -80,7 +80,7 @@ class GetAddressList(unittest.TestCase):
 
         :return:
         """
-        businessCommon.logout(self.login_token)
+        login_status.logout(self.login_token)
         self.log.build_case_line(self.case_name, self.info['code'], self.info['msg'])
 
     def checkResult(self):
