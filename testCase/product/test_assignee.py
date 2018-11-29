@@ -4,7 +4,7 @@ import json
 from commonsrc import common
 from commonsrc.Log import MyLog
 import readConfig as readConfig
-from commonsrc import configHttp as configHttp
+from commonsrc import configHttp
 
 assigneeInfo_xls = common.get_xls("assignee.xls", "assignee_num")
 localReadConfig = readConfig.ReadConfig()
@@ -51,9 +51,6 @@ class ProductInfo(unittest.TestCase):
         """
         self.log = MyLog.get_log()
         self.logger = self.log.get_logger()
-    #   用例执行前登录服务器
-        common.get_login_cookies()
-        common.set_login_cookie_to_config()
     def testGetProductInfo(self):
         """
         test body

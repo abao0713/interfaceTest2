@@ -4,8 +4,8 @@ import json
 from commonsrc import common
 from commonsrc.Log import MyLog
 import readConfig as readConfig
-from commonsrc import configHttp as configHttp
-
+from commonsrc import configHttp
+from commonsrc import login
 
 assigneeInfo_yaml = common.get_case_yaml("assignee.yaml")
 localReadConfig = readConfig.ReadConfig()
