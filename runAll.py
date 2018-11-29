@@ -83,7 +83,7 @@ class AllTest:
             suit = self.set_case_suite()
             if suit is not None:
                 logger.info("********TEST START********")
-                fp = open(resultPath, 'wb')
+                fp = open(resultPath, 'wb+')
                 runner = HTMLTestRunner.HTMLTestRunner(stream=fp, title='Test Report', description='Test Description')
                 runner.run(suit)
             else:

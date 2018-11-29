@@ -257,3 +257,45 @@ request6:
         strongId: ""
     result:
         - {"check": "status_code","expeted":200}
+request7:
+    name: get_repaylist
+    url: https://www.mujin.assignee.com/api/assignee/repayManage/getRealRepayList
+    method: POST
+    headers:
+        Content-Type: application/json;charset=UTF-8
+        Accept-Encoding: gzip, deflate, br
+        User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36
+        Accept-Encoding: gzip, deflate, sdch
+        Accept-Language: zh-CN,zh;q=0.9,en;q=0.8,zh-TW;q=0.7
+       
+    json:
+        companyOrgSign: a
+        operatorId: 20
+        bacthTimes: ''
+        batchCode: ''
+        borrowerIdnumber: ''
+        borrowerName: ''
+        borrowerPhone: ''
+        caseArea: ''
+        caseCode: ''
+        latestRepayDate: []
+        commitDate: []
+        limitDate: []
+        loanInstitution: ''
+        receivableAge: ''
+        registeredAddress: ''
+        promiseRepayMoneyMin: ''
+        promiseRepayMoneyMax: ''
+        commitMoneyMin: ''
+        overdueDayMin: ''
+        overdueDayMax: ''
+        commitMoneyMax: ''
+        reduceMoneyMin: ''
+        reduceMoneyMax: ''
+        repayMoneyMin: ''
+        repayMoneyMax: ''
+        currentPage: 1
+        pageSize: 15
+    result:
+        - {"check": "status_code","expeted":200}
+    

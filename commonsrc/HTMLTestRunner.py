@@ -17,7 +17,7 @@ For more customization options, instantiates a HTMLTestRunner object.
 HTMLTestRunner is a counterpart to unittest's TextTestRunner. E.g.
 
     # output to a file
-    fp = file('my_report.html', 'wb')
+    fp = open('my_report.html', 'wb+')
     runner = HTMLTestRunner.HTMLTestRunner(
                 stream=fp,
                 title='My unit test',
@@ -70,18 +70,18 @@ __version__ = "0.8.2"
 
 """
 Change History
-
+ 
 Version 0.8.2
 * Show output inline instead of popup window (Viorel Lupu).
-
+ 
 Version in 0.8.1
 * Validated XHTML (Wolfgang Borgert).
 * Added description of test classes and test cases.
-
+ 
 Version in 0.8.0
 * Define Template_mixin class for customization.
 * Workaround a IE 6 bug that it does not treat <script> block as CDATA.
-
+ 
 Version in 0.7.1
 * Back port to Python 2.3 (Frank Horowitz).
 * Fix missing scroll bars in detail log (Podi).
@@ -96,7 +96,6 @@ import sys
 import time
 import unittest
 from xml.sax import saxutils
-
 
 # ------------------------------------------------------------------------
 # The redirectors below are used to capture output during testing. Output
@@ -192,46 +191,73 @@ class Template_mixin(object):
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     %(stylesheet)s
 </head>
-<body>
+<body style="background-color:#C0C0C0">
 <script language="javascript" type="text/javascript"><!--
 output_list = Array();
-
-/* level - 0:Summary; 1:Failed; 2:All */
+ 
+/* level - 0:Summary; 1:Pass; 2:Fail; 3:Error; 4:All */
 function showCase(level) {
     trs = document.getElementsByTagName("tr");
     for (var i = 0; i < trs.length; i++) {
         tr = trs[i];
         id = tr.id;
-        if (id.substr(0,2) == 'ft') {
-            if (level < 1) {
+        if (id.substr(0,2) == 'Ft') {
+            if (level == 2) {
+                tr.className = '';
+            }
+            else if(level == 4) {
+                tr.className = '';
+            }
+            else if(level == 5) {
+                tr.className = '';
+            }
+            else{
                 tr.className = 'hiddenRow';
             }
-            else {
+        }
+        if (id.substr(0,2) == 'Pt') {
+            if (level == 1) {
                 tr.className = '';
+            }
+            else if(level == 4 ) {
+                tr.className = '';
+            }
+            else{
+                tr.className = 'hiddenRow';
             }
         }
-        if (id.substr(0,2) == 'pt') {
-            if (level > 1) {
+        if (id.substr(0,2) == 'Et') {
+            if (level == 3) {
                 tr.className = '';
             }
-            else {
+            else if(level == 4 ) {
+                tr.className = '';
+            }
+            else if(level == 5 ) {
+                tr.className = '';
+            }
+            else{
                 tr.className = 'hiddenRow';
             }
         }
     }
 }
-
-
+             
+ 
 function showClassDetail(cid, count) {
     var id_list = Array(count);
     var toHide = 1;
     for (var i = 0; i < count; i++) {
         tid0 = 't' + cid.substr(1) + '.' + (i+1);
-        tid = 'f' + tid0;
+        tid = 'F' + tid0;
         tr = document.getElementById(tid);
         if (!tr) {
-            tid = 'p' + tid0;
+            tid = 'P' + tid0;
             tr = document.getElementById(tid);
+            if(!tr){
+                tid = 'E' + tid0;
+                tr = document.getElementById(tid);
+            }
         }
         id_list[i] = tid;
         if (tr.className) {
@@ -249,8 +275,8 @@ function showClassDetail(cid, count) {
         }
     }
 }
-
-
+ 
+ 
 function showTestDetail(div_id){
     var details_div = document.getElementById(div_id)
     var displayState = details_div.style.display
@@ -263,15 +289,15 @@ function showTestDetail(div_id){
         details_div.style.display = 'none'
     }
 }
-
-
+ 
+ 
 function html_escape(s) {
-    s = s.replace(/&/g,'&amp;');
-    s = s.replace(/</g,'&lt;');
-    s = s.replace(/>/g,'&gt;');
+    s = s.replace(/&/g,'&');
+    s = s.replace(/</g,'<');
+    s = s.replace(/>/g,'>');
     return s;
 }
-
+ 
 /* obsoleted by detail in <div>
 function showOutput(id, name) {
     var w = window.open("", //url
@@ -287,13 +313,140 @@ function showOutput(id, name) {
 }
 */
 --></script>
-
+ 
 %(heading)s
 %(report)s
 %(ending)s
-
+%(chart)s
 </body>
 </html>
+<script type="text/javascript">
+function drawCircle(pass, fail, error){
+    var color = ["#6c6","#c60","#c00"]; 
+    var data = [pass,fail,error];
+    var canvas = document.getElementById("circle"); 
+    var ctx = canvas.getContext("2d"); 
+    var startPoint=0; 
+    for(var i=0;i<data.length;i++){ 
+        ctx.fillStyle = color[i]; 
+        ctx.beginPath(); 
+        ctx.moveTo(112,84);  
+        ctx.arc(112,84,84,startPoint,startPoint+Math.PI*2*(data[i]/(data[0]+data[1]+data[2])),false); 
+        ctx.fill(); 
+        startPoint += Math.PI*2*(data[i]/(data[0]+data[1]+data[2])); 
+    } 
+}
+ 
+function FillRect(cxt, x1, y1, width, height, color) {
+    cxt.fillStyle = color;
+    cxt.fillRect(x1, y1, width, height);
+}
+ 
+function drawBar(pass, fail, error){
+ 
+    var color = ["#6c6","#c60","#c00"]; 
+    var data = [pass,fail,error];
+    var count = pass + fail + error;
+    var h =[10+(1 - pass/count)*148,10+(1 - fail/count)*148,10+(1 - error/count)*148];
+    var x = [30,90,150];
+    var y = [70,130,190];
+    var canvas = document.getElementById("bar"); 
+    var ctx = canvas.getContext("2d");
+    DrawString(ctx, 'Count(c)', '', '', '', '', 15, 10)
+    DrawLine(ctx,5,15,10,10,'black');
+    DrawLine(ctx,15,15,10,10,'black');
+    DrawLine(ctx,10,10,10,158,'black');
+    DrawLine(ctx,10,158,215,158,'black');
+    DrawLine(ctx,210,153,215,158,'black');
+    DrawLine(ctx,210,163,215,158,'black');
+    DrawString(ctx, 'Type(c)', '', '', '', '', 180, 160)
+    for(var i=0;i<3;i++) {
+        DrawLine(ctx,x[i],h[i],x[i],158,color[i]);
+        DrawLine(ctx,x[i],h[i],y[i],h[i],color[i]);
+        DrawLine(ctx,y[i],h[i],y[i],158,color[i]);
+        DrawLine(ctx,(y[i]+x[i])/2,153,(y[i]+x[i])/2,158,color[i]);
+        DrawString(ctx, data[i], '', color[i], '', '', (y[i]+x[i])/2, h[i]-15);
+        FillRect(ctx, x[i], h[i], 40, 158-h[i], color[i]);
+    }
+}
+ 
+function DrawP(ctx, P) {
+    with (ctx) {
+        moveTo(P[0],P[1]);
+        lineTo(P[0]+1,P[1]+1);
+     }
+}
+ 
+function DrawLine(cxt, x1, y1, x2, y2, color) {
+ 
+    cxt.strokeStyle = color;
+    cxt.beginPath();
+    cxt.moveTo(x1, y1);
+    cxt.lineTo(x2, y2);
+    cxt.stroke();
+}
+ 
+function DrawString(cxt, text, font, color, align, v_align, x, y) {
+    if (font == "") {
+        cxt.font = "10px";
+    }
+    else {
+        cxt.font = font;
+    }
+    if (color == "") {
+        cxt.fillStyle = "#000000";
+    }
+    else {
+        cxt.fillStyle = color;
+    }
+    if (align == "") {
+        cxt.textAlign = "left";
+    }
+    else {
+        cxt.textAlign = align;
+    }
+    if (v_align == "") {
+        cxt.textBaseline = "top";
+    }
+    else {
+        cxt.textBaseline = v_align;
+    }
+    cxt.fillText(text, x, y);
+}
+ 
+function drawline(pass, fail, error){
+    var color = ["#6c6","#c60","#c00"]; 
+    var data = [pass,fail,error];
+    var count = pass + fail + error;
+    var x = [30,90,150];
+    var y = [70,130,190];
+    var h =[10+(1 - pass/count)*148,10+(1 - fail/count)*148,10+(1 - error/count)*148];
+    var canvas = document.getElementById("line"); 
+    var ctx = canvas.getContext("2d");
+    DrawString(ctx, 'Count(c)', '', '', '', '', 15, 10)
+    DrawLine(ctx,5,15,10,10,'black');
+    DrawLine(ctx,15,15,10,10,'black');
+    DrawLine(ctx,10,10,10,158,'black');
+    DrawLine(ctx,10,158,215,158,'black');
+    DrawLine(ctx,210,153,215,158,'black');
+    DrawLine(ctx,210,163,215,158,'black');
+    DrawString(ctx, 'Type(c)', '', '', '', '', 180, 160)
+    for(var i=0;i<3;i++) {
+        p = Array((y[i]+x[i])/2,h[i]);
+        DrawP(ctx,p);
+        DrawLine(ctx,(y[i]+x[i])/2,153,(y[i]+x[i])/2,158,color[i]);
+        DrawString(ctx, data[i], '', color[i], '', '', (y[i]+x[i])/2, h[i]-15);
+        if(i < 2) {
+         
+            DrawLine(ctx,(y[i]+x[i])/2,h[i],(y[i+1]+x[i+1])/2,h[i+1],'black');
+             
+        }
+         
+    }
+     
+}
+ 
+</script> 
 """
     # variables: (title, generator, stylesheet, heading, report, ending)
 
@@ -309,35 +462,170 @@ function showOutput(id, name) {
 body        { font-family: verdana, arial, helvetica, sans-serif; font-size: 80%; }
 table       { font-size: 100%; }
 pre         { }
-
+ 
 /* -- heading ---------------------------------------------------------------------- */
 h1 {
-	font-size: 16pt;
-	color: gray;
+    font-size: 16pt;
+    color: gray;
 }
 .heading {
     margin-top: 0ex;
     margin-bottom: 1ex;
 }
-
+ 
 .heading .attribute {
     margin-top: 1ex;
     margin-bottom: 0;
 }
-
+ 
+.button{ 
+    border:1px solid #cccccc; 
+    cursor:pointer; 
+    margin:10px 5px; 
+    height:40px; 
+    text-align:center; 
+    border-radius: 4px; 
+    border-color: #636263 #464647 #A1A3A5; 
+    text-shadow: 0 1px 1px #F6F6F6; 
+    background-image: -moz-linear-gradient(center top, #D9D9D9, #A6A6A6 49%, #A6A6A6 50%); 
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #D9D9D9),color-stop(1, #A6A6A6)); 
+} 
+ 
+.buttonText{ 
+    position:relative; 
+    font-weight:bold; 
+    top:10px;
+    color:#58595B; 
+}  
+ 
 .heading .description {
     margin-top: 4ex;
     margin-bottom: 6ex;
 }
-
+ 
+.panel .description{ 
+    border:1px solid #CCCCCC; 
+    border-color: #636263 #464647 #A1A3A5; 
+    margin:10px 5px; 
+    height:165px; 
+    border-radius: 4px; 
+} 
+.scroll-item { 
+    position: relative; 
+    width: 100%; 
+    height: 32px; 
+    border-bottom:1px solid gray; 
+    cursor: pointer; 
+} 
+.item-even { 
+    background-color: #E7E8EC; 
+} 
+       
+.item-odd { 
+    background-color: #E0ECF6; 
+} 
+.rect { 
+    float: left; 
+    margin-top: 5px; 
+    margin-left: 5px; 
+    width: 20px; 
+    height: 20px; 
+    border-radius: 3px; 
+} 
+.item-text{ 
+    margin-left: 5px; 
+    height: 100%; 
+    float: left; 
+    font-size: 14px;  
+    vertical-align: middle; 
+    display: inline-block; 
+    line-height: 30px; 
+} 
+ 
+.bg{ 
+    position:absolute; 
+    height:97%; 
+    width:80%; 
+    overflow-x: hidden; 
+    overflow-y:hidden; 
+} 
+.panel{ 
+    position:absolute; 
+    height:550px; 
+    width:750px; 
+    left:45px; 
+    top:45px; 
+    border-radius: 12px; 
+    background-image: -moz-linear-gradient(top,#EBEBEB, #BFBFBF); 
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #EBEBEB),color-stop(1, #BFBFBF)); 
+    } 
+.panel1{ 
+    position:absolute; 
+    height:550px; 
+    width:200px; 
+    left:800px; 
+    top:45px; 
+    border-radius: 12px; 
+    background-image: -moz-linear-gradient(top,#EBEBEB, #BFBFBF); 
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #EBEBEB),color-stop(1, #BFBFBF)); 
+    }
+.panelBg{ 
+    position:absolute; 
+    height:600px; 
+    width:1000px; 
+    left:20px; 
+    top:20px; 
+    border-radius: 12px; 
+    background-color:#000000; 
+    opacity:0.5; 
+} 
+ 
+.title{ 
+    border:1px solid green; 
+    position:relative; 
+    margin:5px; 
+    font-size:22px; 
+    font-weight:bold; 
+    text-align:center; 
+    color:#58595B; 
+}
+ 
+.piechart{ 
+    border:1px solid green; 
+    margin:5px; 
+    height:170px; 
+}
+ 
+.barchart{ 
+    border:1px solid green; 
+    margin:5px; 
+    height:170px; 
+} 
+ 
+.linechart{ 
+    border:1px solid green; 
+    margin:5px; 
+    height:170px; 
+}
+      
+.subTitle{ 
+    border:1px solid green; 
+    margin:5px;  
+    font-size:14px; 
+    height:70px; 
+    font-weight:bold; 
+    text-indent:2em; 
+    color:#6D6E71; 
+} 
+ 
 /* -- css div popup ------------------------------------------------------------------------ */
 a.popup_link {
 }
-
+ 
 a.popup_link:hover {
     color: red;
 }
-
+ 
 .popup_window {
     display: none;
     position: relative;
@@ -349,10 +637,9 @@ a.popup_link:hover {
     font-family: "Lucida Console", "Courier New", Courier, monospace;
     text-align: left;
     font-size: 8pt;
-    width: 800px;
-
+    width: 500px;
 }
-
+ 
 }
 /* -- report ------------------------------------------------------------------------ */
 #show_detail_line {
@@ -368,27 +655,68 @@ a.popup_link:hover {
     font-weight: bold;
     color: white;
     background-color: #777;
-    text-align:center;
 }
 #result_table td {
-    border: 1px solid #777;
-    padding: 2px;
+    border: 2px solid #777;
+    padding: 3px;
 }
 #total_row  { font-weight: bold; }
 .passClass  { background-color: #6c6; }
 .failClass  { background-color: #c60; }
 .errorClass { background-color: #c00; }
-.passCase   { color: #6c6; }
+.passCase   { color: #6c6; font-weight: bold;}
 .failCase   { color: #c60; font-weight: bold; }
 .errorCase  { color: #c00; font-weight: bold; }
 .hiddenRow  { display: none; }
 .testcase   { margin-left: 2em; }
-
-
+ 
+#section1{ 
+    border:1px solid green; 
+    position:relative; 
+    float:left; 
+    width:235px; 
+    height:530px; 
+    top:10px; 
+    left:10px; 
+} 
+#section2{ 
+    border:1px solid green; 
+    position:relative; 
+    float:left; 
+    width:235px; 
+    height:530px; 
+    top:10px; 
+    left:20px; 
+} 
+#section3{ 
+    border:1px solid green; 
+    position:relative; 
+    float:left; 
+    width:235px; 
+    height:530px; 
+    top:10px; 
+    left:30px; 
+} 
+#section4{ 
+    border:1px solid green; 
+    position:relative; 
+    float:left; 
+    width:180px; 
+    height:530px; 
+    top:10px; 
+    left:10px; 
+} 
+ 
+.loseeffect{
+    color:black;
+    text-decoration:none;
+    cursor:text;
+}
+ 
 /* -- ending ---------------------------------------------------------------------- */
 #ending {
 }
-
+ 
 </style>
 """
 
@@ -403,11 +731,13 @@ a.popup_link:hover {
 %(parameters)s
 <p class='description'>%(description)s</p>
 </div>
-
+ 
 """ # variables: (title, parameters, description)
 
     HEADING_ATTRIBUTE_TMPL = """<p class='attribute'><strong>%(name)s:</strong> %(value)s</p>
 """ # variables: (name, value)
+
+
 
     # ------------------------------------------------------------------------
     # Report
@@ -416,8 +746,11 @@ a.popup_link:hover {
     REPORT_TMPL = """
 <p id='show_detail_line'>Show
 <a href='javascript:showCase(0)'>Summary</a>
-<a href='javascript:showCase(1)'>Failed</a>
-<a href='javascript:showCase(2)'>All</a>
+<a href='javascript:showCase(1)'>Pass</a>
+<a href='javascript:showCase(2)'>Fail</a>
+<a href='javascript:showCase(3)'>Error</a>
+<a href='javascript:showCase(5)'>Fail&Error</a>
+<a href='javascript:showCase(4)'>All</a>
 </p>
 <table id='result_table'>
 <colgroup>
@@ -429,21 +762,23 @@ a.popup_link:hover {
 <col align='right' />
 </colgroup>
 <tr id='header_row'>
-    <td colspan='2'>Test Group/Test case</td>
+    <td>Test Group/Test case</td>
     <td>Count</td>
     <td>Pass</td>
     <td>Fail</td>
     <td>Error</td>
-    <td>View</td>
+    <td>CaseShot</td>
+    <td>CaseInfo</td>
 </tr>
 %(test_list)s
 <tr id='total_row'>
-    <td colspan='2'>Total</td>
+    <td>Total and Rate</td>
     <td>%(count)s</td>
     <td>%(Pass)s</td>
     <td>%(fail)s</td>
     <td>%(error)s</td>
-    <td>&nbsp;</td>
+    <td>Proportion</td>
+    <td>%(Pass)s/%(count)s</td>
 </tr>
 </table>
 """ # variables: (test_list, count, Pass, fail, error)
@@ -451,11 +786,11 @@ a.popup_link:hover {
     REPORT_CLASS_TMPL = r"""
 <tr class='%(style)s'>
     <td>%(desc)s</td>
-    <td>%(description)s</td>
     <td>%(count)s</td>
     <td>%(Pass)s</td>
     <td>%(fail)s</td>
     <td>%(error)s</td>
+    <td>Click hyperlink view</td>
     <td><a href="javascript:showClassDetail('%(cid)s',%(count)s)">Detail</a></td>
 </tr>
 """ # variables: (style, desc, count, Pass, fail, error, cid)
@@ -463,25 +798,28 @@ a.popup_link:hover {
 
     REPORT_TEST_WITH_OUTPUT_TMPL = r"""
 <tr id='%(tid)s' class='%(Class)s'>
-    <td colspan='2' class='%(style)s'><div class='testcase'>%(desc)s</div></td>
-    <td colspan='7' align='center'>
-
+    <td class='%(style)s'><div class='testcase'>%(desc)s</div></td>
+    <td colspan='4' align='center'>
+ 
     <!--css div popup start-->
     <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_%(tid)s')" >
         %(status)s</a>
-
+ 
     <div id='div_%(tid)s' class="popup_window">
         <div style='text-align: right; color:red;cursor:pointer'>
         <a onfocus='this.blur();' onclick="document.getElementById('div_%(tid)s').style.display = 'none' " >
            [x]</a>
         </div>
         <pre>
-        %(script)s
+        %(script_out)s
         </pre>
     </div>
     <!--css div popup end-->
-
+ 
     </td>
+    <td colspan='1' align='center'><a %(hidde)s href="%(image_url)s" target="%(targets)s" class="%(loseeffect)s">picture_shot</a>
+    </td>
+    <td colspan='1' align='center'>%(script_info)s</td>
 </tr>
 """ # variables: (tid, Class, style, desc, status)
 
@@ -489,20 +827,128 @@ a.popup_link:hover {
     REPORT_TEST_NO_OUTPUT_TMPL = r"""
 <tr id='%(tid)s' class='%(Class)s'>
     <td class='%(style)s'><div class='testcase'>%(desc)s</div></td>
-    <td colspan='5' align='center'>%(status)s</td>
+    <td colspan='4' align='center'>
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_%(tid)s')" >
+        %(status)s</a>
+    <div id='div_%(tid)s' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_%(tid)s').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        %(script_out)s
+        </pre>
+    </div>
+    </td>
+    <td colspan='1' align='center'>picture_shot</td>
+    <td colspan='1' align='center'>%(script_info)s</td>
 </tr>
 """ # variables: (tid, Class, style, desc, status)
 
 
     REPORT_TEST_OUTPUT_TMPL = r"""
 %(id)s: %(output)s
-"""
-    # variables: (id, output)
+""" # variables: (id, output)
+
+    CASEINFO_OUTPUT_TMPL = r"""
+%(caseinfo)s
+""" # variables: (caseinfo)
+
+
 
     # ------------------------------------------------------------------------
     # ENDING
     #
-    ENDING_TMPL = """<div id='ending'>&nbsp;</div>"""
+
+    ENDING_TMPL = """<div id='ending'> </div>"""
+    CHART_TMPL = """<div class="bg"> 
+                       <div class="panelBg"></div> 
+                       <div class="panel">
+                       <div id="section1">
+                           <div class="title">Pie Chart</div> 
+                           <div class="subTitle">This chart is to show the rate that statis of test cases</div>
+                           <div class="piechart">  
+                               <canvas id="circle" width="225" height="168" onmousemove='javascript:drawCircle(%(Pass)s, %(fail)s, %(error)s)'>your browser does not support the canvas tag</canvas>
+                           </div>
+                           <div class="description"> 
+                           <div class="scroll-item item-even"> 
+                               <div class="rect" style="background-color: #6c6; "></div> 
+                               <div class="item-text">Passcase:%(Pass)s</div> 
+                           </div> 
+                           <div class="scroll-item item-odd"> 
+                               <div class="rect" style="background-color: #c60; "></div> 
+                               <div class="item-text">failcase:%(fail)s</div> 
+                           </div>  
+                           <div class="scroll-item item-even"> 
+                               <div class="rect" style="background-color: #c00; "></div> 
+                               <div class="item-text">errorcase:%(error)s</div> 
+                           </div>
+                           <div class="scroll-item item-odd"> 
+                           </div>
+                           <div class="scroll-item item-even">   
+                           </div>
+                       </div>
+                       <div class="button" onclick='javascript:drawCircle(%(Pass)s, %(fail)s, %(error)s)'><span class="buttonText">CLICK SEE PIE CHART</span></div>
+                       </div> 
+                       <div id="section2"> 
+                       <div class="title">Bar Chart</div> 
+                           <div class="subTitle">This chart is to show the count that statis of test cases</div>
+                           <div class="barchart">  
+                               <canvas id="bar" width="225" height="168" onclick='javascript:drawBar(%(Pass)s, %(fail)s, %(error)s)'>your browser does not support the canvas tag</canvas>
+                           </div>
+                           <div class="description"> 
+                           <div class="scroll-item item-even"> 
+                               <div class="rect" style="background-color: #6c6; "></div> 
+                               <div class="item-text">Passcase:%(Pass)s</div> 
+                           </div> 
+                           <div class="scroll-item item-odd"> 
+                               <div class="rect" style="background-color: #c60; "></div> 
+                               <div class="item-text">failcase:%(fail)s</div> 
+                           </div>  
+                           <div class="scroll-item item-even"> 
+                               <div class="rect" style="background-color: #c00; "></div> 
+                               <div class="item-text">errorcase:%(error)s</div> 
+                           </div>
+                           <div class="scroll-item item-odd"> 
+                           </div>
+                           <div class="scroll-item item-even">   
+                           </div>
+                       </div>
+                       <div class="button" onclick='javascript:drawBar(%(Pass)s, %(fail)s, %(error)s)'><span class="buttonText">CLICK SEE BAR CHART</span></div>
+                       </div> 
+                       <div id="section3">
+                        <div class="title">Line Chart</div> 
+                           <div class="subTitle">This chart is to show the rate that data of test cases</div>
+                           <div class="linechart">  
+                               <canvas id="line" width="225" height="168" onclick='javascript:drawline(%(Pass)s, %(fail)s, %(error)s)'>your browser does not support the canvas tag</canvas>
+                           </div>
+                           <div class="description"> 
+                           <div class="scroll-item item-even"> 
+                               <div class="rect" style="background-color: #6c6; "></div> 
+                               <div class="item-text">Passcase:%(Pass)s</div> 
+                           </div> 
+                           <div class="scroll-item item-odd"> 
+                               <div class="rect" style="background-color: #c60; "></div> 
+                               <div class="item-text">failcase:%(fail)s</div> 
+                           </div>  
+                           <div class="scroll-item item-even"> 
+                               <div class="rect" style="background-color: #c00; "></div> 
+                               <div class="item-text">errorcase:%(error)s</div> 
+                           </div>
+                           <div class="scroll-item item-odd"> 
+                           </div>
+                           <div class="scroll-item item-even">   
+                           </div>
+                       </div>
+                       <div class="button" onclick='javascript:drawline(%(Pass)s, %(fail)s, %(error)s)'><span class="buttonText">CLICK SEE BAR CHART</span></div>
+                       </div> 
+                       </div>
+                       <div class="panel1">
+                       <div id="section4">
+                           <a>%(Pass)s Pass cases, %(fail)s fail cases, %(error)s error cases.</a>
+                       </div>
+                       </div>
+                    </div>"""
 
 # -------------------- The end of the Template class -------------------
 
@@ -535,7 +981,7 @@ class _TestResult(TestResult):
     def startTest(self, test):
         TestResult.startTest(self, test)
         # just one buffer for both stdout and stderr
-        self.outputBuffer = io.StringIO()
+        self.outputBuffer = io.BytesIO()
         stdout_redirector.fp = self.outputBuffer
         stderr_redirector.fp = self.outputBuffer
         self.stdout0 = sys.stdout
@@ -621,13 +1067,13 @@ class HTMLTestRunner(Template_mixin):
         self.startTime = datetime.datetime.now()
 
 
-    def run(self, test):
+    def run(self, test, caseinfo={}):
         "Run the given test case or test suite."
         result = _TestResult(self.verbosity)
         test(result)
         self.stopTime = datetime.datetime.now()
-        self.generateReport(test, result)
-        print('\nTime Elapsed: %s' % (self.stopTime-self.startTime), file=sys.stderr)
+        self.generateReport(test, result, caseinfo)
+        print(sys.stderr, '\nTime Elapsed: %s' % (self.stopTime-self.startTime))
         return result
 
 
@@ -638,7 +1084,7 @@ class HTMLTestRunner(Template_mixin):
         classes = []
         for n,t,o,e in result_list:
             cls = t.__class__
-            if not cls in rmap:
+            if not rmap.has_key(cls):
                 rmap[cls] = []
                 classes.append(cls)
             rmap[cls].append((n,t,o,e))
@@ -658,7 +1104,7 @@ class HTMLTestRunner(Template_mixin):
         if result.failure_count: status.append('Failure %s' % result.failure_count)
         if result.error_count:   status.append('Error %s'   % result.error_count  )
         if status:
-            status = ' | '.join(status)
+            status = ' '.join(status)
         else:
             status = 'none'
         return [
@@ -668,13 +1114,14 @@ class HTMLTestRunner(Template_mixin):
         ]
 
 
-    def generateReport(self, test, result):
+    def generateReport(self, test, result, caseinfo):
         report_attrs = self.getReportAttributes(result)
         generator = 'HTMLTestRunner %s' % __version__
         stylesheet = self._generate_stylesheet()
         heading = self._generate_heading(report_attrs)
-        report = self._generate_report(result)
+        report = self._generate_report(result, caseinfo)
         ending = self._generate_ending()
+        chart = self._generate_chart(result)
         output = self.HTML_TMPL % dict(
             title = saxutils.escape(self.title),
             generator = generator,
@@ -682,8 +1129,9 @@ class HTMLTestRunner(Template_mixin):
             heading = heading,
             report = report,
             ending = ending,
+            chart = chart,
         )
-        self.stream.write(output.encode('utf8'))
+        self.stream.write(output)
 
 
     def _generate_stylesheet(self):
@@ -706,7 +1154,7 @@ class HTMLTestRunner(Template_mixin):
         return heading
 
 
-    def _generate_report(self, result):
+    def _generate_report(self, result, caseinfo):
         rows = []
         sortedResult = self.sortResult(result.result)
         for cid, (cls, cls_results) in enumerate(sortedResult):
@@ -715,7 +1163,7 @@ class HTMLTestRunner(Template_mixin):
             for n,t,o,e in cls_results:
                 if n == 0: np += 1
                 elif n == 1: nf += 1
-                else: ne += 1
+                elif n == 2: ne += 1
 
             # format class description
             if cls.__module__ == "__main__":
@@ -724,12 +1172,10 @@ class HTMLTestRunner(Template_mixin):
                 name = "%s.%s" % (cls.__module__, cls.__name__)
             doc = cls.__doc__ and cls.__doc__.split("\n")[0] or ""
             desc = doc and '%s: %s' % (name, doc) or name
-            description = cls_results[0][1].case_name
 
             row = self.REPORT_CLASS_TMPL % dict(
                 style = ne > 0 and 'errorClass' or nf > 0 and 'failClass' or 'passClass',
                 desc = desc,
-                description = description,
                 count = np+nf+ne,
                 Pass = np,
                 fail = nf,
@@ -739,7 +1185,7 @@ class HTMLTestRunner(Template_mixin):
             rows.append(row)
 
             for tid, (n,t,o,e) in enumerate(cls_results):
-                self._generate_report_test(rows, cid, tid, n, t, o, e)
+                self._generate_report_test(rows, cid, tid, n, t, o, e, caseinfo)
 
         report = self.REPORT_TMPL % dict(
             test_list = ''.join(rows),
@@ -751,10 +1197,15 @@ class HTMLTestRunner(Template_mixin):
         return report
 
 
-    def _generate_report_test(self, rows, cid, tid, n, t, o, e):
-        # e.g. 'pt1.1', 'ft1.1', etc
+    def _generate_report_test(self, rows, cid, tid, n, t, o, e, caseinfo):
+        # e.g. 'Pt1.1', 'Ft1.1','E1.1,' etc
         has_output = bool(o or e)
-        tid = (n == 0 and 'p' or 'f') + 't%s.%s' % (cid+1,tid+1)
+        if n == 0:
+            tid = 'Pt%s.%s' % (cid+1,tid+1)
+        elif n == 1:
+            tid = 'Ft%s.%s' % (cid+1,tid+1)
+        else:
+            tid = 'Et%s.%s' % (cid+1,tid+1)
         name = t.id().split('.')[-1]
         doc = t.shortDescription() or ""
         desc = doc and ('%s: %s' % (name, doc)) or name
@@ -764,28 +1215,54 @@ class HTMLTestRunner(Template_mixin):
         if isinstance(o,str):
             # TODO: some problem with 'string_escape': it escape \n and mess up formating
             # uo = unicode(o.encode('string_escape'))
-            uo = o
+            uo = e.decode('utf-8')
         else:
-            uo = o
+            uo = o.decode('utf-8')
         if isinstance(e,str):
             # TODO: some problem with 'string_escape': it escape \n and mess up formating
             # ue = unicode(e.encode('string_escape'))
-            ue = e
+            ue = e.decode('utf-8')
         else:
-            ue = e
+            ue = e.decode('utf-8')
 
-        script = self.REPORT_TEST_OUTPUT_TMPL % dict(
+        output = saxutils.escape(str(uo)+ue)
+        print (output)
+        unum = str(output).find('screenshot')
+        print (unum)
+        if (unum!=-1):
+            hidde_status = ''
+            unum=str(output).find('screenshot')
+            image_url = '../screenshot/'+str(output)[unum+11:unum+36].replace(' ','')
+            targets = '_blank'
+            loseeffect = ''
+        else:
+            hidde_status = ''
+            image_url = 'javascript:void(0)'
+            targets = ''
+            loseeffect = 'loseeffect'
+
+        script_out = self.REPORT_TEST_OUTPUT_TMPL % dict(
             id = tid,
-            output = saxutils.escape(uo+ue),
+            output = saxutils.escape(str(uo)+ue),
+        )
+
+        script_info = self.CASEINFO_OUTPUT_TMPL % dict(
+            caseinfo = caseinfo.get(desc,'No Case Detail'),
         )
 
         row = tmpl % dict(
             tid = tid,
             Class = (n == 0 and 'hiddenRow' or 'none'),
-            style = n == 2 and 'errorCase' or (n == 1 and 'failCase' or 'none'),
+            style = (n == 2 and 'errorCase') or (n == 1 and 'failCase') or (n == 0 and 'passCase'),
             desc = desc,
-            script = script,
             status = self.STATUS[n],
+            script_out = script_out,
+            script_info = script_info,
+            image_url = image_url,
+            hidde = hidde_status,
+            targets = targets,
+            loseeffect = loseeffect,
+
         )
         rows.append(row)
         if not has_output:
@@ -793,6 +1270,15 @@ class HTMLTestRunner(Template_mixin):
 
     def _generate_ending(self):
         return self.ENDING_TMPL
+
+    def _generate_chart(self, result):
+
+        report = self.CHART_TMPL % dict(
+            Pass = str(result.success_count),
+            fail = str(result.failure_count),
+            error = str(result.error_count),
+        )
+        return report
 
 
 ##############################################################################

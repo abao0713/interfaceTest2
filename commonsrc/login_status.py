@@ -1,7 +1,7 @@
 from commonsrc import common
 from commonsrc import configHttp
 import readConfig as readConfig
-
+import requests
 localReadConfig = readConfig.ReadConfig()
 localConfigHttp = configHttp.ConfigHttp()
 localLogin_xls = common.get_xls("userCase.xlsx", "login")
@@ -28,7 +28,7 @@ def get_login_cookies():
     cookie=response.cookies.get_dict()
     print("登录状态:",info["msg"])
 
-    return cookie["ASSIGNEE_JSESSIONID"]
+    return response.cookies
 
 # logout
 def logout(token):
@@ -48,4 +48,5 @@ def logout(token):
     # logout
     localConfigHttp.get()
 
-
+if __name__ == '__main__':
+    get_login_cookies()

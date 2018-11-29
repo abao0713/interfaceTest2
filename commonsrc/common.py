@@ -77,6 +77,7 @@ def set_visitor_token_to_config():
     """
     token_v = get_visitor_token()
     localReadConfig.set_headers("token_v", token_v)
+    #保存cookies
 
 def set_login_cookie_to_config():
     """

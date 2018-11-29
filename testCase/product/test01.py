@@ -6,6 +6,7 @@ from commonsrc.Log import MyLog
 import readConfig as readConfig
 from commonsrc import configHttp as configHttp
 
+
 assigneeInfo_yaml = common.get_case_yaml("assignee.yaml")
 localReadConfig = readConfig.ReadConfig()
 localConfigHttp = configHttp.ConfigHttp()
@@ -47,9 +48,7 @@ class ProductInfo(unittest.TestCase):
         """
         self.log = MyLog.get_log()
         self.logger = self.log.get_logger()
-    #   用例执行前登录服务器
-        common.get_login_cookies()
-        common.set_login_cookie_to_config()
+
     def testGetProductInfo(self):
         """
         test body
@@ -62,10 +61,16 @@ class ProductInfo(unittest.TestCase):
         # set url
         localConfigHttp.set_url(self.url)
         # set headers
+        #   用例执行前登录服务器
+        """
+        common.get_login_cookies()
+        common.set_login_cookie_to_config()
         cookie_token = localReadConfig.get_headers("cookie_v")
-        headers = {"Cookie": "ASSIGNEE_JSESSIONID="+str(cookie_token)}
-        headers["Content-Type"] = "application/json;charset=UTF-8"
-        localConfigHttp.set_headers(headers)
+        self.headers = {"Cookie": "ASSIGNEE_JSESSIONID="+str(cookie_token)}
+
+        print(self.headers["Cookie"])
+        localConfigHttp.set_headers(self.headers)
+        """
 
         if self.method == 'get':
             # get http

@@ -1,7 +1,7 @@
 import requests
 import readConfig as readConfig
 from commonsrc.Log import MyLog as Log
-
+from commonsrc.login_status import *
 
 localReadConfig = readConfig.ReadConfig()
 
@@ -22,7 +22,8 @@ class ConfigHttp:
         self.url = None
         self.files = {}
         self.state = 0
-
+        self.cookies = get_login_cookies()
+        localConfigHttp.set_cookies(self.cookies)
     def set_url(self, url):
         """
         set url
@@ -31,7 +32,12 @@ class ConfigHttp:
         """
         #self.url = scheme+'://'+host+url
         self.url = url
+    def set_cookies(self,cookies):
+        """
 
+        :return:
+        """
+        self.cookies=cookies
 
     def set_headers(self, header):
         """
@@ -79,7 +85,7 @@ class ConfigHttp:
         :return:
         """
         try:
-            return_data = requests.get(self.url, headers=self.headers, params=self.params, timeout=float(timeout))
+            return_data = requests.get(self.url, headers=self.headers, params=self.params, timeout=float(timeout),cookies=self.cookies)
             # response.raise_for_status()
             return return_data
         except TimeoutError:
@@ -96,7 +102,7 @@ class ConfigHttp:
         """
         try:
 
-            return_data = requests.post(self.url, headers=self.headers,  data=self.data, verify=False ,timeout=float(timeout))
+            return_data = requests.post(self.url, headers=self.headers,  data=self.data, verify=False ,timeout=float(timeout),cookies=self.cookies)
             # response.raise_for_status()
             info = return_data.json()
 
