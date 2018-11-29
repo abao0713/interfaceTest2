@@ -20,8 +20,8 @@ table = data.sheets()[0]
 # c1=arange(0,nrows,1)
 # print(c1)
 
-start = 1  # 开始的行
-end = 10  # 结束的行
+start = 2  # 开始的行
+end = 32  # 结束的行
 
 
 list_values = []

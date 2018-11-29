@@ -1,7 +1,6 @@
-
 request0:
-    name: login
-    url: https://www.mujin.assignee.com/api/assignee/collectionMark/saveCollectionMark
+    name: case_input
+    url: https://www.online.robot.com/api/api/task/importBatch
     method: POST
     headers:
         Content-Type: application/json
@@ -11,100 +10,70 @@ request0:
         Accept-Language: zh-CN,zh;q=0.8
         
     json:
-        companyOrgSign: a
-        operatorId: 20
-        callName: 李们华
-        callPhone: 13686821736
-        caseCode: "1800004491"
-        caseId: 2545
-        caseLabel: ""
-        caseManageId: 808
-        collectionRemark: "ybj5555256"
-        collectionTips: "未知"
-        contactAttitude: ["骂人"]
-        contactRelation: "本人"
-        isRelevancy: 0
-        phoneAnswerStatus: 1
-        phoneLabel: "无人接听"
-        phoneStatus: "无效"
-        repaymentIntention: ["无意还款"]
-        source: ""
-        strongId: ""
+        reqCode: 1542107329518
+        accountName: "智灵平台"
+        appKey: Aa123456
+        timestamp: 1542107329518
+        sign: d138b91f1f5ab87ba3b7580413b5eac2
+        data: 
+              taskName: "ybj-2018-1015"
+              callLines: 1
+              strategyCode: SG000001
+              batchType: "信用卡"
+              endTime: "18:00"
+              startTime: "9:50"
+              caseInfos: 
+                     - 
+                billCode: "api-YBJ-20181010-023"
+                productName: "现金贷"
+                productType: "信用卡"
+                creditCardType: "金卡"
+                customerCode: 0056
+               loanInstitution: "招行"
+               borrowerName: "李天明"
+               borrowerAge: 53
+               borrowerGender: "男"
+               borrowerIdnumber: 440881199805148016
+               borrowerPhone: 13686821736
+               borrowerAccount: 8015
+               borrowerCard: 8015
+               divideNum: 3
+               openCardDate: "2018-05-05"
+               isFirst: "是"
+               currency: "人民币"
+               overdueDay: 10
+               overdueDate: "2018-10-05"
+               limitRepayDate: "2018-12-01"
+               bankPhone: "0755-26742656"
+               commitMoney: 6500
+               caseProvince: "广东"
+               caseCity: "深圳"
+               registeredProvince: "广东"
+               registeredCity: "深圳"
+               educationLevel: "本科"
+               yearIncome: 100w
+               creditLine: 15
+               cashAmount: 15
+               applyCreditScore: 150
+               behaviorScore: 100
+               marriageStatus: "已婚"
+               normalRepayCount: 1
+               underCommitCount: 1
+               aboveCommitCount: 1
+               contact1Name: "李化"
+               contact1Tel: 13424280538
+               contact1Relation: "朋友一"
+               contact2Name: ""
+               contact2Tel: ""
+               contact2Relation: ""
+               contact3Name: ""
+               contact3Tel: ""
+               contact3Relation: ""
     result:
-        - {"check": "status_code","expeted":200}
-
-request1:
-    name: login
-    url: https://www.mujin.assignee.com/api/assignee/collectionMark/saveCollectionMark
-    method: POST
-    headers:
-        Content-Type: application/json
-        X-Requested-With: XMLHttpRequest
-        User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
-        Accept-Encoding: gzip, deflate, sdch
-        Accept-Language: zh-CN,zh;q=0.8
-        
-    json:
-        companyOrgSign: a
-        operatorId: 20
-        callName: 李们华
-        callPhone: 13686821736
-        caseCode: "1800004491"
-        caseId: 2545
-        caseLabel: ""
-        caseManageId: 808
-        collectionRemark: "ybj5555256"
-        collectionTips: "未知"
-        contactAttitude: ["骂人"]
-        contactRelation: "本人"
-        isRelevancy: 0
-        phoneAnswerStatus: 1
-        phoneLabel: "无人接听"
-        phoneStatus: "无效"
-        repaymentIntention: ["无意还款"]
-        source: ""
-        strongId: ""
-    result:
-        - {"check": "status_code","expeted":200}
-
-
-request2:
-    name: login
-    url: https://www.mujin.common.private.assignee.com/api/assignee/collectionMark/saveCollectionMark
-    method: POST
-    headers:
-        Content-Type: application/json
-        X-Requested-With: XMLHttpRequest
-        User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
-        Accept-Encoding: gzip, deflate, sdch
-        Accept-Language: zh-CN,zh;q=0.8
-        
-    json:
-        companyOrgSign: aprivate
-        operatorId: 133
-        caseId: 2570
-        caseCode: 1800004195
-        caseManageId: 144
-        callName: 而非
-        callPhone: 18636345663
-        caseCode: "1800004195"
-        caseId: 2570
-        caseLabel: ""
-        caseManageId: 872
-        collectionRemark: "未知"
-        collectionTips: "未知"
-        contactAttitude: ["未知"]
-        contactRelation: "本人"
-        isRelevancy: 0
-        phoneAnswerStatus: 1
-        phoneLabel: "设限"
-        phoneStatus: "无效"
-        reminderType: 1
-        repaymentIntention: ["未知123"]
-        source: ""
-        strongId: ""
-    result:
-        - {"check": "status_code","expeted":200}
+        data: 
+          batchId: 5
+        code: 0
+        msg: "操作成功"
 
 request3:
     name: login

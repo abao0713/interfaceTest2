@@ -1215,15 +1215,15 @@ class HTMLTestRunner(Template_mixin):
         if isinstance(o,str):
             # TODO: some problem with 'string_escape': it escape \n and mess up formating
             # uo = unicode(o.encode('string_escape'))
-            uo = e.decode('utf-8')
+            uo = e
         else:
-            uo = o.decode('utf-8')
+            uo = o
         if isinstance(e,str):
             # TODO: some problem with 'string_escape': it escape \n and mess up formating
             # ue = unicode(e.encode('string_escape'))
-            ue = e.decode('utf-8')
+            ue = e
         else:
-            ue = e.decode('utf-8')
+            ue = e
 
         output = saxutils.escape(str(uo)+ue)
         print (output)

@@ -22,8 +22,8 @@ class ConfigHttp:
         self.url = None
         self.files = {}
         self.state = 0
-        self.cookies = get_login_cookies()
-        localConfigHttp.set_cookies(self.cookies)
+        #self.cookies = get_login_cookies()
+        #localConfigHttp.set_cookies(self.cookies)
     def set_url(self, url):
         """
         set url
