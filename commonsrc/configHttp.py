@@ -1,19 +1,18 @@
 import requests
 import readConfig as readConfig
 from commonsrc.Log import MyLog as Log
-from commonsrc import login
+from commonsrc.login import testlogin
 
 
 
 localReadConfig = readConfig.ReadConfig()
-s=login.testlogin()
+s = testlogin().test_login()
 
 class ConfigHttp:
 
     def __init__(self):
         global scheme, host, port, timeout
         scheme = localReadConfig.get_http("scheme")
-        host = localReadConfig.get_http("baseurl")
         port = localReadConfig.get_http("port")
         timeout = localReadConfig.get_http("timeout")
         self.log = Log.get_log()
@@ -26,14 +25,14 @@ class ConfigHttp:
         self.state = 0
         #self.cookies = get_login_cookies()
         #localConfigHttp.set_cookies(self.cookies)
-    def set_url(self, url):
+    def set_url(self, host,url):
         """
         set url
         :param: interface url
         :return:
         """
         #self.url = scheme+'://'+host+url
-        self.url = url
+        self.url = host+url
     def set_cookies(self,cookies):
         """
 
@@ -87,7 +86,7 @@ class ConfigHttp:
         :return:
         """
         try:
-            return_data = s.get(self.url, headers=self.headers, params=self.params, timeout=float(timeout),cookies=self.cookies)
+            return_data = s.get(self.url, headers=self.headers, params=self.params, timeout=float(timeout))
             # response.raise_for_status()
             return return_data
         except TimeoutError:
@@ -104,7 +103,7 @@ class ConfigHttp:
         """
         try:
 
-            return_data = s.post(self.url, headers=self.headers,  data=self.data, verify=False ,timeout=float(timeout),cookies=self.cookies)
+            return_data = s.post(self.url, headers=self.headers,  data=self.data, verify=False ,timeout=float(timeout))
             # response.raise_for_status()
             info = return_data.json()
 
@@ -136,7 +135,7 @@ class ConfigHttp:
         :return:
         """
         try:
-            response = s.post(self.url, headers=self.headers, json=self.data, timeout=float(timeout))
+            response =s.post(self.url, headers=self.headers, json=self.data, timeout=float(timeout))
             return response
         except TimeoutError:
             self.logger.error("Time out!")

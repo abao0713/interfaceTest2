@@ -48,7 +48,7 @@ class Log:
         """
         self.logger.info("--------" + case_no + " END--------")
 
-    def build_case_line(self, case_name, code, msg):
+    def build_case_line(self, case_name, msg):
         """
         write test case line
         :param case_name:
@@ -56,7 +56,7 @@ class Log:
         :param msg:
         :return:
         """
-        self.logger.info(case_name+" - Code:"+code+" - msg:"+msg)
+        self.logger.info(case_name+"----msg:"+msg)
 
     def get_report_path(self):
         """

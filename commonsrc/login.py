@@ -14,6 +14,7 @@ class testlogin():
         response = s.post(self.login_url,json=da)
         info = response.json()
         print(info)
+        print('login_sucsse')
         return s
 if __name__ == '__main__':
     a=testlogin()
