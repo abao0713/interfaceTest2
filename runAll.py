@@ -58,13 +58,13 @@ class AllTest:
 
         for case in self.caseList:
             case_name = case.split("/")[-1]
-            print(self.caseFile + '\\product')
+            #print(self.caseFile + '\\product')
 
             discover = unittest.defaultTestLoader.discover(self.caseFile+'\\product', pattern=case_name + '.py', top_level_dir=None)
             suite_module.append(discover)
 
         if len(suite_module) > 0:
-            print(suite_module)
+            #print(suite_module)
             for suite in suite_module:
                 for test_name in suite:
                     test_suite.addTest(test_name)
@@ -84,7 +84,7 @@ class AllTest:
             if suit is not None:
                 logger.info("********TEST START********")
                 fp = open(resultPath, 'wb+')
-                runner = HTMLTestRunner.HTMLTestRunner(stream=fp, title='Test Report', description='Test Description')
+                runner = HTMLTestRunner.HTMLTestRunner(stream=fp, title='Test Report', description='Test Description',verbosity=2)
                 runner.run(suit)
             else:
                 logger.info("Have no case to test.")

@@ -62,5 +62,5 @@ if __name__ == "__main__":
     # runner.run(suite)
     filename = 'D:\\myreport.html'
     fp = open(filename, 'wb')
-    runner = HTMLTestRunner.HTMLTestRunner(fp, title=u'my unit test', description=u'This is a report test')
+    runner = HTMLTestRunner.HTMLTestRunner(fp, title=u'my unit test', description=u'This is a report test',verbosity=2)
     runner.run(suite)
