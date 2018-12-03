@@ -68,7 +68,7 @@ class Email:
         :return:
         """
         # defined image path
-        image1_path = os.path.join(readConfig.proDir, 'testFile', 'img', '1.png')
+        image1_path = os.path.join(readConfig.proDir, 'testFile', 'img', 'logo.png')
         fp1 = open(image1_path, 'rb')
         msgImage1 = MIMEImage(fp1.read())
         # self.msg.attach(msgImage1)
@@ -78,7 +78,7 @@ class Email:
         msgImage1.add_header('Content-ID', '<image1>')
         self.msg.attach(msgImage1)
 
-        image2_path = os.path.join(readConfig.proDir, 'testFile', 'img', 'logo.jpg')
+        image2_path = os.path.join(readConfig.proDir, 'testFile', 'img', 'image2.png')
         fp2 = open(image2_path, 'rb')
         msgImage2 = MIMEImage(fp2.read())
         # self.msg.attach(msgImage2)
@@ -164,5 +164,5 @@ class MyEmail:
 
 if __name__ == "__main__":
     email = Email()
-    email.check_file()
-    email.config_file()
+
+    email.send_email()
