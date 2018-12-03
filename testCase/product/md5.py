@@ -2,13 +2,13 @@ import time
 import hashlib
 import xlrd
 import json
-s=int(time.time()*1000)
+s=int(time.time()*1000)#当前时间对应reqCode，timestamp
 e=str(s)
-print(s)
+print(s)#reqCode，timestamp两个值相等
 h='Aa123456'+e+e
 print(h)
-m= hashlib.md5()
-m.update(h.encode(encoding='utf-8')) #生成加密串，其中h是要加密的字符串
+m= hashlib.md5()#加密
+m.update(h.encode(encoding='utf-8')) #生成加密串，其中h是要加密的字符串，对应sign字段
 print (m.hexdigest())
 
 
@@ -20,8 +20,8 @@ table = data.sheets()[0]
 # c1=arange(0,nrows,1)
 # print(c1)
 
-start = 2  # 开始的行
-end = 32  # 结束的行
+start = 97 # 开始的行
+end = 107  # 结束的行
 
 
 list_values = []
