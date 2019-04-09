@@ -2,7 +2,7 @@ import requests
 import readConfig as readConfig
 from commonsrc.Log import MyLog as Log
 from commonsrc.login import testlogin
-
+import requests
 
 
 localReadConfig = readConfig.ReadConfig()
@@ -33,6 +33,7 @@ class ConfigHttp:
         """
         #self.url = scheme+'://'+host+url
         self.url = host+url
+        print(self.url)
     def set_cookies(self,cookies):
         """
 
@@ -85,6 +86,7 @@ class ConfigHttp:
         defined get method
         :return:
         """
+        requests.packages.urllib3.disable_warnings()
         try:
             return_data = s.get(self.url, headers=self.headers, params=self.params, timeout=float(timeout))
             # response.raise_for_status()
@@ -101,9 +103,10 @@ class ConfigHttp:
         defined post method
         :return:
         """
+        requests.packages.urllib3.disable_warnings()
         try:
 
-            return_data = s.post(self.url, headers=self.headers,  data=self.data, verify=False ,timeout=float(timeout))
+            return_data = s.post(self.url, headers=self.headers,  data=self.data, verify=False,timeout=float(timeout))
             # response.raise_for_status()
             info = return_data.json()
 
@@ -120,6 +123,7 @@ class ConfigHttp:
         defined post method
         :return:
         """
+        requests.packages.urllib3.disable_warnings()
         try:
             response = s.post(self.url, headers=self.headers, data=self.data, files=self.files, timeout=float(timeout))
             return response
@@ -134,6 +138,7 @@ class ConfigHttp:
         defined post method
         :return:
         """
+        requests.packages.urllib3.disable_warnings()
         try:
             response =s.post(self.url, headers=self.headers, json=self.data, timeout=float(timeout))
             return response

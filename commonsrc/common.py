@@ -4,6 +4,7 @@ import os
 import yaml
 from assertpy import assert_that
 import xlrd
+from xlutils3.copy import copy
 import re
 
 try:
@@ -388,9 +389,15 @@ def check_result(response={}, hope_response={}, value=0):
 
     return True
 
-
+ # 向某个单元格写入数据
+def write_data(filepath,row, col, value):
+    data = xlrd.open_workbook(filepath)  # 打开指定的excel文件
+    data_copy = copy(data)  # 复制原文件使的文件可以改动
+    sheet = data_copy.get_sheet(0)  # 取得复制文件的sheet对象
+    sheet.write(row, col, value)  # 在某一单元格写入value
+    data_copy.save(filepath)  # 保存文件
 
 
 
 if __name__ == "__main__":
-    get_case_yaml("assignee.yaml")
+    check_result(response={}, hope_response={}, value=0)

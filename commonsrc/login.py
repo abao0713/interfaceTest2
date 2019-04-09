@@ -4,14 +4,14 @@ import requests
 s = requests.Session()#定义一个全局session
 class testlogin():
     def __init__(self):
-        self.login_url = "https://robot.zhilingsd.com/api/login?userAccount=aybj&password=Aa123456"
-        self.username = "aybj"
+        self.login_url = "https://www.zhiling.robotsh.com/api/login"
+        self.username = "test03"
         self.password = "Aa123456"
     def test_login(self):
         da={
             "userAccount":self.username,
             "password":self.password}
-        response = s.post(self.login_url,json=da)
+        response = s.post(self.login_url,json=da,verify=False)
         info = response.json()
         print(info)
         print('login_sucsse')
