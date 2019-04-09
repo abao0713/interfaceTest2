@@ -237,6 +237,7 @@ class test_robot(unittest.TestCase):
         if self.return_data["code"] == 0:
             print("批量洗号任务上报接口正常")
             clean_name = self.return_data["data"]
+            print(clean_name)
         else:
             print("批量洗号任务上报接口异常")
             print(self.return_data["msg"])
@@ -318,9 +319,9 @@ class test_robot(unittest.TestCase):
         self.return_data = localConfigHttp.post()
         print(self.return_data)
         if self.return_data["code"] == 0:
-            print("批次暂停接口正常")
+            print("批次重启接口正常")
         else:
-            print("批次暂停接口异常")
+            print("批次重启接口异常")
             print(self.return_data["msg"])
 
     #通过批次名称取消批次
