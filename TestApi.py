@@ -1,7 +1,5 @@
 # -*- coding:utf-8 -*-
-import requests
 import time
-from commonsrc.login import testlogin
 import hashlib
 import json
 import unittest
@@ -325,6 +323,7 @@ class test_robot(unittest.TestCase):
             print(self.return_data["msg"])
 
     #通过批次名称取消批次
+    @unittest.skip
     def test09_end(self):
         timestamp, sign = hash_robot()
         request_url = '/api/api/task/stopBatch'
