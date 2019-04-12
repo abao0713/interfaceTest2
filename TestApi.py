@@ -29,7 +29,7 @@ class test_robot(unittest.TestCase):
         """和setUpclass类似，在调用整个类测试方法完成后执行一次"""
         pass
     #催记导出
-    def test05_caseinfo(self):
+    def test5_caseinfo(self):
 
         timestamp,sign = hash_robot()
         # 数据
@@ -58,7 +58,7 @@ class test_robot(unittest.TestCase):
             print("催记导出接口异常")
             print(self.return_data["msg"])
     #外呼结果查询
-    def test04_result(self):
+    def test4_result(self):
         request_url = '/api/api/task/exportApiCallRecord'
         timestamp, sign = hash_robot()
         # 数据
@@ -87,7 +87,7 @@ class test_robot(unittest.TestCase):
             print(self.return_data["msg"])
 
     #新建批次
-    def test01_import(self):
+    def test1_import(self):
         timestamp, sign = hash_robot()
         request_url = '/api/api/task/importBatch'
         global aname
@@ -177,14 +177,16 @@ class test_robot(unittest.TestCase):
             print("新建批次案件导入接口异常")
             print(self.return_data["msg"])
     #案件还款
-    def test06_hunan(self):
+    def test6_hunan(self):
         timestamp, sign = hash_robot()
         request_url = '/api/api/task/importRepay'
         # 数据
-        data = {'repayCases':[{'billCode':'','latestRepayMoney':'','latestRepayDate':''},
-                              ]
 
-                }
+        data1 = [{'billCode':'api-YBJ-20190403-0953','latestRepayMoney':'2345',
+                  'latestRepayDate':'2019-04-10'}]
+        data = {'repayCases': data1, 'batchName': aname}
+
+
         param = {'reqCode': timestamp,
                  'accountName': 1223,
                  'timestamp': timestamp,
@@ -207,7 +209,7 @@ class test_robot(unittest.TestCase):
             print(self.return_data["msg"])
 
     #批量洗号任务上报
-    def test02_clean(self):
+    def test2_clean(self):
         global clean_name
         timestamp, sign = hash_robot()
         request_url = '/api/api/task/cleanAPIUpload'
@@ -241,7 +243,7 @@ class test_robot(unittest.TestCase):
             print(self.return_data["msg"])
 
     #批量洗号结果查询
-    def test03_check(self):
+    def test3_check(self):
 
         timestamp, sign = hash_robot()
         request_url = '/api/api/task/getCleanResult'
@@ -270,7 +272,7 @@ class test_robot(unittest.TestCase):
             print(self.return_data["msg"])
 
     #批次暂停
-    def test07_pause(self):
+    def test7_pause(self):
         timestamp, sign = hash_robot()
         request_url = '/api/api/task/pauseBatch'
         # 数据
@@ -296,7 +298,7 @@ class test_robot(unittest.TestCase):
             print("批次暂停接口异常")
             print(self.return_data["msg"])
     #重启批次
-    def test08_start(self):
+    def test8_start(self):
         timestamp, sign = hash_robot()
         request_url = '/api/api/task/continueBatch'
         # 数据
@@ -323,8 +325,8 @@ class test_robot(unittest.TestCase):
             print(self.return_data["msg"])
 
     #通过批次名称取消批次
-    @unittest.skip
-    def test09_end(self):
+    #@unittest.skip
+    def test9_end(self):
         timestamp, sign = hash_robot()
         request_url = '/api/api/task/stopBatch'
         # 数据
