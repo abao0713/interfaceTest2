@@ -29,6 +29,7 @@ class test_robot(unittest.TestCase):
         """和setUpclass类似，在调用整个类测试方法完成后执行一次"""
         pass
     #催记导出
+    @unittest.skip
     def test5_caseinfo(self):
 
         timestamp,sign = hash_robot()
@@ -58,6 +59,7 @@ class test_robot(unittest.TestCase):
             print("催记导出接口异常")
             print(self.return_data["msg"])
     #外呼结果查询
+    @unittest.skip
     def test4_result(self):
         request_url = '/api/api/task/exportApiCallRecord'
         timestamp, sign = hash_robot()
@@ -87,6 +89,7 @@ class test_robot(unittest.TestCase):
             print(self.return_data["msg"])
 
     #新建批次
+    @unittest.skip
     def test1_import(self):
         timestamp, sign = hash_robot()
         request_url = '/api/api/task/importBatch'
@@ -177,6 +180,7 @@ class test_robot(unittest.TestCase):
             print("新建批次案件导入接口异常")
             print(self.return_data["msg"])
     #案件还款
+    @unittest.skip
     def test6_hunan(self):
         timestamp, sign = hash_robot()
         request_url = '/api/api/task/importRepay'
@@ -209,6 +213,7 @@ class test_robot(unittest.TestCase):
             print(self.return_data["msg"])
 
     #批量洗号任务上报
+    @unittest.skip
     def test2_clean(self):
         global clean_name
         timestamp, sign = hash_robot()
@@ -243,6 +248,7 @@ class test_robot(unittest.TestCase):
             print(self.return_data["msg"])
 
     #批量洗号结果查询
+    @unittest.skip
     def test3_check(self):
 
         timestamp, sign = hash_robot()
@@ -272,6 +278,7 @@ class test_robot(unittest.TestCase):
             print(self.return_data["msg"])
 
     #批次暂停
+    @unittest.skip
     def test7_pause(self):
         timestamp, sign = hash_robot()
         request_url = '/api/api/task/pauseBatch'
@@ -298,6 +305,7 @@ class test_robot(unittest.TestCase):
             print("批次暂停接口异常")
             print(self.return_data["msg"])
     #重启批次
+    @unittest.skip
     def test8_start(self):
         timestamp, sign = hash_robot()
         request_url = '/api/api/task/continueBatch'
@@ -325,7 +333,7 @@ class test_robot(unittest.TestCase):
             print(self.return_data["msg"])
 
     #通过批次名称取消批次
-    #@unittest.skip
+    @unittest.skip
     def test9_end(self):
         timestamp, sign = hash_robot()
         request_url = '/api/api/task/stopBatch'
@@ -351,16 +359,89 @@ class test_robot(unittest.TestCase):
         else:
             print("取消批次接口异常")
             print(self.return_data["msg"])
+    #新增或修改停呼号码
+    def testa_tingc(self):
+        timestamp, sign = hash_robot()
+        request_url = '/api/api/task/saveOrUpdate'
+        # 数据
+        #data = [{'phone': '13424280538','startTime':'2019-04-12','endTime':'2019-04-13'},
+        #        {'phone': '13022040404','startTime':'2019-04-12','endTime':'2019-04-13'}]
+        param = {'reqCode': timestamp,
+                 'accountName': 1223,
+                 'timestamp': timestamp,
+                 'sign': sign,
+                 'data': [{'phone': '13424280538','startTime':'2019-04-10 09:11:11','endTime':'2019-04-13 09:11:11'},
+                {'phone': '13022040404','startTime':'2019-04-12 09:11:11','endTime':'2019-04-13 09:11:11'}]
 
+                 }
+        localConfigHttp.set_url(baseurl, request_url)
+        headers = {'content-type': 'application/json'}
+        localConfigHttp.set_headers(headers)
+        param = json.dumps(param)
+        print(param)
+        localConfigHttp.set_data(param)
+        self.return_data = localConfigHttp.post()
+        print(self.return_data)
+        if self.return_data["code"] == 0:
+            print("新增或修改停呼号码接口正常")
+        else:
+            print("新增或修改停呼号码接口异常")
+            print(self.return_data["msg"])
 
+    #停呼号码删除
+    def testc_tinsha(self):
+        timestamp, sign = hash_robot()
+        request_url = '/api/api/task/delete'
+        # 数据
+        data = ['13424280538','222']
+        param = {'reqCode': timestamp,
+                 'accountName': 1223,
+                 'timestamp': timestamp,
+                 'sign': sign,
+                 'data': data
 
+                 }
+        localConfigHttp.set_url(baseurl, request_url)
+        headers = {'content-type': 'application/json'}
+        localConfigHttp.set_headers(headers)
+        param = json.dumps(param)
+        print(param)
+        localConfigHttp.set_data(param)
+        self.return_data = localConfigHttp.post()
+        print(self.return_data)
+        if self.return_data["code"] == 0:
+            print("停呼号码删除接口正常")
+        else:
+            print("停呼号码删除接口异常")
+            print(self.return_data["msg"])
 
+    #获取停呼号码列表
+    def testb_endplist(self):
+        timestamp, sign = hash_robot()
+        request_url = '/api/api/task/getStopPhoneList'
+        # 数据
 
+        param = {'reqCode': timestamp,
+                 'accountName': 1223,
+                 'timestamp': timestamp,
+                 'sign': sign,
+                 'data': {'offset':'0','limit':'1'}
 
-
-
-
-
+                 }
+        localConfigHttp.set_url(baseurl, request_url)
+        headers = {'content-type': 'application/json'}
+        localConfigHttp.set_headers(headers)
+        param = json.dumps(param)
+        print(param)
+        localConfigHttp.set_data(param)
+        self.return_data = localConfigHttp.post()
+        print(self.return_data)
+        if self.return_data["code"] == 0:
+            print("获取停呼号码列表接口正常")
+            print(self.return_data["data"])
+        else:
+            print("获取停呼号码列表接口异常")
+            print(self.return_data["msg"])
 
 
 if __name__ == "__main__":
