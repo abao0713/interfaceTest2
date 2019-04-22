@@ -89,7 +89,7 @@ class test_robot(unittest.TestCase):
             print(self.return_data["msg"])
 
     #新建批次
-    @unittest.skip
+    #@unittest.skip
     def test1_import(self):
         timestamp, sign = hash_robot()
         request_url = '/api/api/task/importBatch'
@@ -141,7 +141,14 @@ class test_robot(unittest.TestCase):
 			'contact2Relation':'',
 			'contact3Name':'',
 			'contact3Tel':'',
-			'contact3Relation':''
+			'contact3Relation':'',
+            'contact4Name':'',
+            'contact4Tel': '',
+            'contact4Relation': '',
+            'contact5Name': '',
+            'contact5Tel': '',
+            'contact5Relation': '',
+
 		}]
 
         data = {'taskName': aname,#批次名称
@@ -360,6 +367,7 @@ class test_robot(unittest.TestCase):
             print("取消批次接口异常")
             print(self.return_data["msg"])
     #新增或修改停呼号码
+    @unittest.skip
     def testa_tingc(self):
         timestamp, sign = hash_robot()
         request_url = '/api/api/task/saveOrUpdate'
@@ -389,6 +397,7 @@ class test_robot(unittest.TestCase):
             print(self.return_data["msg"])
 
     #停呼号码删除
+    @unittest.skip
     def testc_tinsha(self):
         timestamp, sign = hash_robot()
         request_url = '/api/api/task/delete'
@@ -416,6 +425,7 @@ class test_robot(unittest.TestCase):
             print(self.return_data["msg"])
 
     #获取停呼号码列表
+    @unittest.skip
     def testb_endplist(self):
         timestamp, sign = hash_robot()
         request_url = '/api/api/task/getStopPhoneList'

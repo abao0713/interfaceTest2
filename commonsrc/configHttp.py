@@ -2,7 +2,7 @@ import requests
 import readConfig as readConfig
 from commonsrc.Log import MyLog as Log
 from commonsrc.login import testlogin
-import requests
+import requests,json
 
 
 localReadConfig = readConfig.ReadConfig()
