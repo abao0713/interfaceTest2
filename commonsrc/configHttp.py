@@ -33,7 +33,7 @@ class ConfigHttp:
         """
         #self.url = scheme+'://'+host+url
         self.url = host+url
-        print(self.url)
+        return self.url
     def set_cookies(self,cookies):
         """
 

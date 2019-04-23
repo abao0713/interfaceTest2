@@ -396,6 +396,25 @@ def write_data(filepath,row, col, value):
     sheet = data_copy.get_sheet(0)  # 取得复制文件的sheet对象
     sheet.write(row, col, value)  # 在某一单元格写入value
     data_copy.save(filepath)  # 保存文件
+    #输入值可以知道值在excel的位置
+def local(filepath,sheet_name,str):
+    """
+
+    :param filepath: 文件地址
+    :param sheet_name: 表单名称
+    :param str: 需要查询的字符
+    :return: 返回行和列值
+    """
+    data = xlrd.open_workbook(filepath)
+    sheet = data.sheet_by_name(sheet_name)  # 名字的方式
+    nrows = sheet.nrows  # 行
+    ncols = sheet.ncols  # 列
+    for i in range(nrows):
+        for j in range(ncols):
+            if str == sheet.cell(i, j).value:
+                return i,j
+    #lng = table.cell(i, 3).value  # 获取i行3列的表格值
+    #lat = table.cell(i, 4).value  # 获取i行4列的表格值
 
 
 
