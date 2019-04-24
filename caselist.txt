@@ -9,6 +9,7 @@
 #user/testUploadImg
 #user/testGetAddressList
 #user/testGetAddress
-product/test_assignee
+#product/test_assignee
 #user/testAddAddress
 #user/testDeleteAddress
+product/test_ho
