@@ -172,7 +172,7 @@ def get_xls(xls_name, sheet_name):
     for i in range(nrows):
         if sheet.row_values(i)[0] != u'case_module':
             cls.append(sheet.row_values(i))
-    print(cls)
+#    print(cls)
     return cls
 def get_case_yaml(case_yaml):
     """

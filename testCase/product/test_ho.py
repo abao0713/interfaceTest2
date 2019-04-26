@@ -8,9 +8,10 @@ from commonsrc import configHttp
 import warnings,os
 import xlrd
 from xlutils3.copy import copy
+from commonsrc.test_login import test_login
 
 
-assigneeInfo_xls = common.get_xls("test_ho.xlsx", "api")
+assigneeInfo_xls = common.get_xls("test_hos.xlsx", "api")
 localReadConfig = readConfig.ReadConfig()
 localConfigHttp = configHttp.ConfigHttp()
 proDir = readConfig.proDir
@@ -30,7 +31,7 @@ class ProductInfo(unittest.TestCase):
         self.Request_data = Request_data
         self.Return_data = None
         self.Result = None
-        self.dicts = {}
+
     def description(self):
         """
         :return:
@@ -52,7 +53,10 @@ class ProductInfo(unittest.TestCase):
         """
         localConfigHttp.set_url(self.Host,self.Request_url)
         if self.No != 'No':
-            headers = {"content-type": "application/x-www-form-urlencoded"}
+            a = test_login()
+            token = a.test_ho()
+            headers = {"content-type": "application/x-www-form-urlencoded",
+                       "Authorization":"Bearer "+token}
             Request_data = json.loads(self.Request_data)
             #Request_data = json.dumps(self.Request_data)
             localConfigHttp.set_headers(headers)
@@ -62,15 +66,30 @@ class ProductInfo(unittest.TestCase):
                     # get http
                     self.response = localConfigHttp.get()
                     #self.info = json.loads(self.json_response)
-                    print(self.response.content)
+                    self.info = self.response.content.decode(encoding='utf-8')
+                    self.info = json.loads(self.info)
+                    print(type(self.response.content.decode(encoding='utf-8')))
+                    if self.info["error_code"] == 0:
+                        msg = self.info["msg"]
+                        value = msg
+                        result = 1
+                    else:
+                        msg = self.info["msg"]
+                        code = self.info["error_code"]
+                        self.logger.debug(msg)
+                        print(msg + 'cg')
+                        self.log.build_case_line(self.Api_name, msg)
+                        value = msg
+                        result = code
                     # check result
+                    """
                     if common.check_result(self.Return_data, self.response):
                         value = 1
                         result = 1
                     else:
                         value = 0
                         result = 0
-
+                """
                 else:
                     # post http
                     # response.setContentType("charset=utf-8”)
@@ -78,10 +97,11 @@ class ProductInfo(unittest.TestCase):
                     self.response = localConfigHttp.post()
                     if self.response["error_code"] == 0:
                         msg = self.response["msg"]
+                        value = msg
                         self.info = self.response
                         print(self.info)
                         #self.log.write_result(self.info)
-                        value = msg
+
                         result = 1
                         # check result
                         # common.check_result(self.return_data, self.info)
@@ -94,7 +114,7 @@ class ProductInfo(unittest.TestCase):
                         print(msg+'cg')
                         self.log.build_case_line(self.Api_name, msg)
                         value = msg
-                        result = 0
+                        result = code
             #xlsPath = os.path.join(proDir, "testFile", 'case', 'test_ho.xlsx')
             filepath = os.path.join(proDir, "testFile", 'case', 'test_ho_result.xlsx')
             #filepath = os.path.join(proDir, "testFile", 'case', 'test_ho.xlsx')
