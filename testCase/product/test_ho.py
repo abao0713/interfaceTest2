@@ -9,6 +9,7 @@ import warnings,os
 import xlrd
 from xlutils3.copy import copy
 from commonsrc.test_login import test_login
+import time
 
 
 assigneeInfo_xls = common.get_xls("test_hos.xlsx", "api")
@@ -31,7 +32,7 @@ class ProductInfo(unittest.TestCase):
         self.Request_data = Request_data
         self.Return_data = None
         self.Result = None
-
+        print(self.Api_name)
     def description(self):
         """
         :return:
@@ -55,6 +56,7 @@ class ProductInfo(unittest.TestCase):
         if self.No != 'No':
             a = test_login()
             token = a.test_ho()
+            time.sleep(13)
             headers = {"content-type": "application/x-www-form-urlencoded",
                        "Authorization":"Bearer "+token}
             Request_data = json.loads(self.Request_data)
@@ -68,7 +70,7 @@ class ProductInfo(unittest.TestCase):
                     #self.info = json.loads(self.json_response)
                     self.info = self.response.content.decode(encoding='utf-8')
                     self.info = json.loads(self.info)
-                    print(type(self.response.content.decode(encoding='utf-8')))
+                    print(self.response.content.decode(encoding='utf-8'))
                     if self.info["error_code"] == 0:
                         msg = self.info["msg"]
                         value = msg
@@ -100,7 +102,7 @@ class ProductInfo(unittest.TestCase):
                         value = msg
                         self.info = self.response
                         print(self.info)
-                        #self.log.write_result(self.info)
+                        #self.log.write_result(msg)
 
                         result = 1
                         # check result

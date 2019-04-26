@@ -108,6 +108,7 @@ class ConfigHttp:
 
             return_data = s.post(self.url, headers=self.headers,  data=self.data, verify=False,timeout=float(timeout))
             # response.raise_for_status()
+            print(return_data.text)
             info = return_data.json()
 
             return info

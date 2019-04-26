@@ -13,10 +13,14 @@ class test_login():
         }
         #da=json.loads(da)
         response = requests.post(self.login_url,headers=headers,data=da,verify=False)
+        print(response.text)
         info = response.json()
-        token=info["content"]["access_token"]
-        print(token)
-        return token
+        if info["error_code"] ==0:
+
+            token=info["content"]["access_token"]
+            print(token)
+            return token
+
 if __name__ == '__main__':
     a=test_login()
     a.test_ho()
