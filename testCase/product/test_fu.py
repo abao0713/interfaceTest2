@@ -12,7 +12,7 @@ from commonsrc.test_login import test_login
 import time
 
 
-assigneeInfo_xls = common.get_xls("test_hos.xlsx", "api")
+assigneeInfo_xls = common.get_xls("test_fu.xlsx", "api")
 localReadConfig = readConfig.ReadConfig()
 localConfigHttp = configHttp.ConfigHttp()
 proDir = readConfig.proDir
@@ -54,13 +54,14 @@ class ProductInfo(unittest.TestCase):
         """
         localConfigHttp.set_url(self.Host,self.Request_url)
         if self.No != 'No':
-        #if self.No == "HDP114":
+            """
             a = test_login()
-            token = a.test_ho()
+            token = a.test_fu()
             time.sleep(13)
+            """
+            token = ""
             headers = {"content-type": "application/x-www-form-urlencoded",
                        "Authorization":"Bearer "+token}
-            #print(self.Request_data)
             Request_data = json.loads(self.Request_data)
             #Request_data = json.dumps(self.Request_data)
             localConfigHttp.set_headers(headers)
@@ -71,7 +72,6 @@ class ProductInfo(unittest.TestCase):
                     self.response = localConfigHttp.get()
                     #self.info = json.loads(self.json_response)
                     self.info = self.response.content.decode(encoding='utf-8')
-                    print(self.info)
                     self.info = json.loads(self.info)
                     print(self.response.content.decode(encoding='utf-8'))
                     if self.info["error_code"] == 0:
@@ -97,7 +97,7 @@ class ProductInfo(unittest.TestCase):
                 """
                 else:
                     # post http
-                    # response.setContentType("charset=utf-8â€)
+                    # response.setContentType("charset=utf-8¡±)
 
                     self.response = localConfigHttp.post()
                     if self.response["error_code"] == 0:
@@ -121,18 +121,18 @@ class ProductInfo(unittest.TestCase):
                         value = msg
                         result = code
             #xlsPath = os.path.join(proDir, "testFile", 'case', 'test_ho.xlsx')
-            filepath = os.path.join(proDir, "testFile", 'case', 'test_ho_result.xlsx')
+            filepath = os.path.join(proDir, "testFile", 'case', 'test_fu_result.xlsx')
             #filepath = os.path.join(proDir, "testFile", 'case', 'test_ho.xlsx')
-            i, j = common.local(filepath=filepath, sheet_name='api', str=self.No)  # å®šä½æŸ¥è¯¢å­—æ®µåœ¨ç¬¬å‡ è¡Œç¬¬å‡ åˆ—
-            data = xlrd.open_workbook(filepath)  # æ‰“å¼€æŒ‡å®šçš„excelæ–‡ä»¶
-            data_copy = copy(data)  # å¤åˆ¶åŸæ–‡ä»¶ä½¿çš„æ–‡ä»¶å¯ä»¥æ”¹åŠ¨
-            sheet = data_copy.get_sheet(0)  # å–å¾—å¤åˆ¶æ–‡ä»¶çš„sheetå¯¹è±¡
-            sheet.write(i, j+9, result)  # åœ¨æŸä¸€å•å…ƒæ ¼å†™å…¥value
+            i, j = common.local(filepath=filepath, sheet_name='api', str=self.No)  # ¶¨Î»²éÑ¯×Ö¶ÎÔÚµÚ¼¸ĞĞµÚ¼¸ÁĞ
+            data = xlrd.open_workbook(filepath)  # ´ò¿ªÖ¸¶¨µÄexcelÎÄ¼ş
+            data_copy = copy(data)  # ¸´ÖÆÔ­ÎÄ¼şÊ¹µÄÎÄ¼ş¿ÉÒÔ¸Ä¶¯
+            sheet = data_copy.get_sheet(0)  # È¡µÃ¸´ÖÆÎÄ¼şµÄsheet¶ÔÏó
+            sheet.write(i, j+9, result)  # ÔÚÄ³Ò»µ¥Ôª¸ñĞ´Èëvalue
             sheet.write(i,j+7,value)
             #filepath = os.path.join(proDir, "testFile", 'case', 'test_ho_result.xlsx')
-            data_copy.save(filepath)  # ä¿å­˜æ–‡ä»¶
+            data_copy.save(filepath)  # ±£´æÎÄ¼ş
         else:
-            self.logger.debug('éjsonå…¥å‚')
+            self.logger.debug('·ÇjsonÈë²Î')
 
 
     def tearDown(self):
