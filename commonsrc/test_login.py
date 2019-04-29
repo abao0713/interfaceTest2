@@ -35,12 +35,12 @@ class test_login():
         #da=json.loads(da)
         re = requests.options(self.login_url, headers=headers)
         print(re.status_code)
-        response = requests.get(self.login_url_fu,headers=headers,data=da,verify=False)
+        response = requests.post(self.login_url_fu,headers=headers,data=da,verify=False)
         print("login failure print as follows"+response.text)
         info = response.json()
         if info["error_code"] ==0:
 
-            token=info["content"]["access_token"]
+            token=info["content"]["token"]
             print(token)
             return token
 if __name__ == '__main__':

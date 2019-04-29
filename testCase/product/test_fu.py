@@ -17,7 +17,7 @@ localReadConfig = readConfig.ReadConfig()
 localConfigHttp = configHttp.ConfigHttp()
 proDir = readConfig.proDir
 @paramunittest.parametrized(*assigneeInfo_xls)
-class ProductInfo(unittest.TestCase):
+class ProductInfofu(unittest.TestCase):
     def setParameters(self, No, Api_name, Host, Request_url, Method, Request_data_type,Request_data,Return_data,Check_data,Result):
         """
         set params
@@ -47,21 +47,20 @@ class ProductInfo(unittest.TestCase):
         self.logger = self.log.get_logger()
         warnings.simplefilter("ignore", ResourceWarning)
 
-    def testGetProductInfo(self):
+    def testGetProductInfofu(self):
         """
         test body
         :return:
         """
         localConfigHttp.set_url(self.Host,self.Request_url)
         if self.No != 'No':
-            """
+
             a = test_login()
             token = a.test_fu()
-            time.sleep(13)
-            """
-            token = ""
+            time.sleep(10)
+
             headers = {"content-type": "application/x-www-form-urlencoded",
-                       "Authorization":"Bearer "+token}
+                       "Authorization":token}
             Request_data = json.loads(self.Request_data)
             #Request_data = json.dumps(self.Request_data)
             localConfigHttp.set_headers(headers)
@@ -132,7 +131,7 @@ class ProductInfo(unittest.TestCase):
             #filepath = os.path.join(proDir, "testFile", 'case', 'test_ho_result.xlsx')
             data_copy.save(filepath)  # 保存文件
         else:
-            self.logger.debug('非json入参')
+            self.logger.debug('no json is')
 
 
     def tearDown(self):
@@ -143,6 +142,6 @@ class ProductInfo(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    a = ProductInfo()
-    a.testGetProductInfo()
+    a = ProductInfofu()
+    a.testGetProductInfofu()
 
