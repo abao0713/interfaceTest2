@@ -57,7 +57,7 @@ class ProductInfofu(unittest.TestCase):
 
             a = test_login()
             token = a.test_fu()
-            time.sleep(10)
+            time.sleep(1)
 
             headers = {"content-type": "application/x-www-form-urlencoded",
                        "Authorization":token}
@@ -99,6 +99,8 @@ class ProductInfofu(unittest.TestCase):
                     # response.setContentType("charset=utf-8¡±)
 
                     self.response = localConfigHttp.post()
+                    response.encoding = 'utf-8'
+                    print(self.response.status)
                     if self.response["error_code"] == 0:
                         msg = self.response["msg"]
                         value = msg
