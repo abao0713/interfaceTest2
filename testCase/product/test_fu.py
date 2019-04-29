@@ -69,22 +69,35 @@ class ProductInfofu(unittest.TestCase):
                 if self.Method == 'get':
                     # get http
                     self.response = localConfigHttp.get()
+                    if self.response.status_code == 200:
+
                     #self.info = json.loads(self.json_response)
-                    self.info = self.response.content.decode(encoding='utf-8')
-                    self.info = json.loads(self.info)
-                    print(self.response.content.decode(encoding='utf-8'))
-                    if self.info["error_code"] == 0:
-                        msg = self.info["msg"]
-                        value = msg
-                        result = 1
-                    else:
-                        msg = self.info["msg"]
-                        code = self.info["error_code"]
-                        self.logger.debug(msg)
-                        print(msg + 'cg')
-                        self.log.build_case_line(self.Api_name, msg)
-                        value = msg
-                        result = code
+                        self.info = self.response.content.decode(encoding='utf-8')
+                        self.info = json.loads(self.info)
+                        print(self.response.content.decode(encoding='utf-8'))
+                        if self.info["error_code"] == 0:
+                            msg = self.info["msg"]
+                            value = msg
+                            result = 1
+                        else:
+                            msg = self.info["msg"]
+                            code = self.info["error_code"]
+                            self.logger.debug(msg)
+                            print(msg + 'cg')
+                            self.log.build_case_line(self.Api_name, msg)
+                            value = msg
+                            result = code
+                        # xlsPath = os.path.join(proDir, "testFile", 'case', 'test_ho.xlsx')
+                        filepath = os.path.join(proDir, "testFile", 'case', 'test_fu_result.xlsx')
+                        # filepath = os.path.join(proDir, "testFile", 'case', 'test_ho.xlsx')
+                        i, j = common.local(filepath=filepath, sheet_name='api', str=self.No)  # 定位查询字段在第几行第几列
+                        data = xlrd.open_workbook(filepath)  # 打开指定的excel文件
+                        data_copy = copy(data)  # 复制原文件使的文件可以改动
+                        sheet = data_copy.get_sheet(0)  # 取得复制文件的sheet对象
+                        sheet.write(i, j + 9, result)  # 在某一单元格写入value
+                        sheet.write(i, j + 7, value)
+                        # filepath = os.path.join(proDir, "testFile", 'case', 'test_ho_result.xlsx')
+                        data_copy.save(filepath)  # 保存文件
                     # check result
                     """
                     if common.check_result(self.Return_data, self.response):
@@ -98,40 +111,44 @@ class ProductInfofu(unittest.TestCase):
                     # post http
                     # response.setContentType("charset=utf-8”)
 
-                    self.response = localConfigHttp.post()
-                    response.encoding = 'utf-8'
-                    print(self.response.status)
-                    if self.response["error_code"] == 0:
-                        msg = self.response["msg"]
-                        value = msg
-                        self.info = self.response
-                        print(self.info)
-                        #self.log.write_result(msg)
+                    return_data = localConfigHttp.post()
+                    if return_data.status_code == 200:
 
-                        result = 1
-                        # check result
-                        # common.check_result(self.return_data, self.info)
-                        #
+                        self.response = return_data.json()
+                        print(self.response.status)
+                        if self.response["error_code"] == 0:
+                            msg = self.response["msg"]
+                            value = msg
+                            self.info = self.response
+                            print(self.info)
+                            #self.log.write_result(msg)
 
-                    else:
-                        msg = self.response["msg"]
-                        code = self.response["error_code"]
-                        self.logger.debug(msg)
-                        print(msg+'cg')
-                        self.log.build_case_line(self.Api_name, msg)
-                        value = msg
-                        result = code
-            #xlsPath = os.path.join(proDir, "testFile", 'case', 'test_ho.xlsx')
-            filepath = os.path.join(proDir, "testFile", 'case', 'test_fu_result.xlsx')
-            #filepath = os.path.join(proDir, "testFile", 'case', 'test_ho.xlsx')
-            i, j = common.local(filepath=filepath, sheet_name='api', str=self.No)  # 定位查询字段在第几行第几列
-            data = xlrd.open_workbook(filepath)  # 打开指定的excel文件
-            data_copy = copy(data)  # 复制原文件使的文件可以改动
-            sheet = data_copy.get_sheet(0)  # 取得复制文件的sheet对象
-            sheet.write(i, j+9, result)  # 在某一单元格写入value
-            sheet.write(i,j+7,value)
-            #filepath = os.path.join(proDir, "testFile", 'case', 'test_ho_result.xlsx')
-            data_copy.save(filepath)  # 保存文件
+                            result = 1
+                            # check result
+                            # common.check_result(self.return_data, self.info)
+                            #
+
+                        else:
+                            msg = self.response["msg"]
+                            code = self.response["error_code"]
+                            self.logger.debug(msg)
+                            print(msg+'cg')
+                            self.log.build_case_line(self.Api_name, msg)
+                            value = msg
+                            result = code
+
+                    #xlsPath = os.path.join(proDir, "testFile", 'case', 'test_ho.xlsx')
+                    filepath = os.path.join(proDir, "testFile", 'case', 'test_fu_result.xlsx')
+                    #filepath = os.path.join(proDir, "testFile", 'case', 'test_ho.xlsx')
+                    i, j = common.local(filepath=filepath, sheet_name='api', str=self.No)  # 定位查询字段在第几行第几列
+                    data = xlrd.open_workbook(filepath)  # 打开指定的excel文件
+                    data_copy = copy(data)  # 复制原文件使的文件可以改动
+                    sheet = data_copy.get_sheet(0)  # 取得复制文件的sheet对象
+                    sheet.write(i, j+9, result)  # 在某一单元格写入value
+                    sheet.write(i,j+7,value)
+                    #filepath = os.path.join(proDir, "testFile", 'case', 'test_ho_result.xlsx')
+                    data_copy.save(filepath)  # 保存文件
+
         else:
             self.logger.debug('no json is')
 
@@ -144,6 +161,8 @@ class ProductInfofu(unittest.TestCase):
 
 
 if __name__ == '__main__':
+
     a = ProductInfofu()
     a.testGetProductInfofu()
+
 

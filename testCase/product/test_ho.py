@@ -99,27 +99,31 @@ class ProductInfo(unittest.TestCase):
                     # post http
                     # response.setContentType("charset=utf-8”)
 
-                    self.response = localConfigHttp.post()
-                    if self.response["error_code"] == 0:
-                        msg = self.response["msg"]
-                        value = msg
-                        self.info = self.response
-                        print(self.info)
-                        #self.log.write_result(msg)
+                    return_data = localConfigHttp.post()
+                    if return_data.status_code == 200:
 
-                        result = 1
-                        # check result
-                        # common.check_result(self.return_data, self.info)
-                        #
+                        self.response = return_data.json()
 
-                    else:
-                        msg = self.response["msg"]
-                        code = self.response["error_code"]
-                        self.logger.debug(msg)
-                        print(msg+'cg')
-                        self.log.build_case_line(self.Api_name, msg)
-                        value = msg
-                        result = code
+                        if self.response["error_code"] == 0:
+                            msg = self.response["msg"]
+                            value = msg
+                            self.info = self.response
+                            print(self.info)
+                            #self.log.write_result(msg)
+
+                            result = 1
+                            # check result
+                            # common.check_result(self.return_data, self.info)
+                            #
+
+                        else:
+                            msg = self.response["msg"]
+                            code = self.response["error_code"]
+                            self.logger.debug(msg)
+                            print(msg+'cg')
+                            self.log.build_case_line(self.Api_name, msg)
+                            value = msg
+                            result = code
             #xlsPath = os.path.join(proDir, "testFile", 'case', 'test_ho.xlsx')
             filepath = os.path.join(proDir, "testFile", 'case', 'test_ho_result.xlsx')
             #filepath = os.path.join(proDir, "testFile", 'case', 'test_ho.xlsx')
