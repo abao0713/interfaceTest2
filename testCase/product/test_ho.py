@@ -12,7 +12,7 @@ from commonsrc.test_login import test_login
 import time
 
 
-assigneeInfo_xls = common.get_xls("test_hos.xlsx", "api")
+assigneeInfo_xls = common.get_xls("test_hos.xlsx", "Sheet2")
 localReadConfig = readConfig.ReadConfig()
 localConfigHttp = configHttp.ConfigHttp()
 proDir = readConfig.proDir
@@ -57,7 +57,7 @@ class ProductInfo(unittest.TestCase):
         #if self.No == "HDP114":
             a = test_login()
             token = a.test_ho()
-            time.sleep(13)
+            time.sleep(1)
             headers = {"content-type": "application/x-www-form-urlencoded",
                        "Authorization":"Bearer "+token}
             #print(self.Request_data)

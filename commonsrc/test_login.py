@@ -34,7 +34,7 @@ class test_login():
         }
         #da=json.loads(da)
         re = requests.options(self.login_url, headers=headers)
-        print(re.status_code)
+        #print(re.status_code)
         response = requests.post(self.login_url_fu,headers=headers,data=da,verify=False)
         print("login failure print as follows"+response.text)
         info = response.json()

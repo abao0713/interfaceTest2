@@ -51,13 +51,14 @@ class test_robot(unittest.TestCase):
         localConfigHttp.set_headers(headers)
         param = json.dumps(param)
         localConfigHttp.set_data(param)
-        self.return_data = localConfigHttp.post()
-        print(self.return_data)
-        if self.return_data["code"] == 0:
+        return_data = localConfigHttp.post()
+        self.response = return_data.json()
+        print(self.response)
+        if self.response["code"] == 0:
             print("催记导出接口正常")
         else:
             print("催记导出接口异常")
-            print(self.return_data["msg"])
+            print(self.response["msg"])
     #外呼结果查询
     @unittest.skip
     def test4_result(self):
@@ -80,13 +81,14 @@ class test_robot(unittest.TestCase):
         localConfigHttp.set_headers(headers)
         param = json.dumps(param)
         localConfigHttp.set_data(param)
-        self.return_data = localConfigHttp.post()
-        print(self.return_data)
-        if self.return_data["code"] == 0:
+        return_data = localConfigHttp.post()
+        self.response =return_data.json()
+        print(self.response)
+        if self.response["code"] == 0:
             print("外呼结果查询接口正常")
         else:
             print("外呼结果查询接口异常")
-            print(self.return_data["msg"])
+            print(self.response["msg"])
 
     #新建批次
     #@unittest.skip
@@ -179,13 +181,14 @@ class test_robot(unittest.TestCase):
         param = json.dumps(param)
         print(param)
         localConfigHttp.set_data(param)
-        self.return_data = localConfigHttp.post()
-        print(self.return_data)
-        if self.return_data["code"] == 0:
+        return_data = localConfigHttp.post()
+        self.response = return_data.json()
+        print(self.response)
+        if self.response["code"] == 0:
             print("新建批次案件导入接口正常")
         else:
             print("新建批次案件导入接口异常")
-            print(self.return_data["msg"])
+            print(self.response["msg"])
     #案件还款
     @unittest.skip
     def test6_hunan(self):
@@ -211,13 +214,14 @@ class test_robot(unittest.TestCase):
         param = json.dumps(param)
         print(param)
         localConfigHttp.set_data(param)
-        self.return_data = localConfigHttp.post()
-        print(self.return_data)
-        if self.return_data["code"] == 0:
+        return_data = localConfigHttp.post()
+        self.response = return_data.json()
+        print(self.response)
+        if self.response["code"] == 0:
             print("案件还款接口正常")
         else:
             print("案件还款接口异常")
-            print(self.return_data["msg"])
+            print(self.response["msg"])
 
     #批量洗号任务上报
     @unittest.skip
@@ -244,15 +248,16 @@ class test_robot(unittest.TestCase):
         param = json.dumps(param)
         print(param)
         localConfigHttp.set_data(param)
-        self.return_data = localConfigHttp.post()
-        print(self.return_data)
-        if self.return_data["code"] == 0:
+        return_data = localConfigHttp.post()
+        self.response = return_data.json()
+        print(self.response)
+        if self.response["code"] == 0:
             print("批量洗号任务上报接口正常")
-            clean_name = self.return_data["data"]
+            clean_name = self.response["data"]
             print(clean_name)
         else:
             print("批量洗号任务上报接口异常")
-            print(self.return_data["msg"])
+            print(self.response["msg"])
 
     #批量洗号结果查询
     @unittest.skip
@@ -276,13 +281,14 @@ class test_robot(unittest.TestCase):
         param = json.dumps(param)
         print(param)
         localConfigHttp.set_data(param)
-        self.return_data = localConfigHttp.post()
-        print(self.return_data)
-        if self.return_data["code"] == 0:
+        return_data = localConfigHttp.post()
+        self.response = return_data.json()
+        print(self.response)
+        if self.response["code"] == 0:
             print("批量洗号结果查询接口正常")
         else:
             print("批量洗号结果查询接口异常")
-            print(self.return_data["msg"])
+            print(self.response["msg"])
 
     #批次暂停
     @unittest.skip
@@ -304,13 +310,14 @@ class test_robot(unittest.TestCase):
         param = json.dumps(param)
         print(param)
         localConfigHttp.set_data(param)
-        self.return_data = localConfigHttp.post()
-        print(self.return_data)
-        if self.return_data["code"] == 0:
+        return_data = localConfigHttp.post()
+        self.response = return_data.json()
+        print(self.response)
+        if self.response["code"] == 0:
             print("批次暂停接口正常")
         else:
             print("批次暂停接口异常")
-            print(self.return_data["msg"])
+            print(self.response["msg"])
     #重启批次
     @unittest.skip
     def test8_start(self):
@@ -331,13 +338,14 @@ class test_robot(unittest.TestCase):
         param = json.dumps(param)
         print(param)
         localConfigHttp.set_data(param)
-        self.return_data = localConfigHttp.post()
-        print(self.return_data)
-        if self.return_data["code"] == 0:
+        return_data = localConfigHttp.post()
+        self.response = return_data.json()
+        print(self.response)
+        if self.response["code"] == 0:
             print("批次重启接口正常")
         else:
             print("批次重启接口异常")
-            print(self.return_data["msg"])
+            print(self.response["msg"])
 
     #通过批次名称取消批次
     @unittest.skip
@@ -359,13 +367,14 @@ class test_robot(unittest.TestCase):
         param = json.dumps(param)
         print(param)
         localConfigHttp.set_data(param)
-        self.return_data = localConfigHttp.post()
-        print(self.return_data)
-        if self.return_data["code"] == 0:
+        return_data = localConfigHttp.post()
+        self.response = return_data.json()
+        print(self.response)
+        if self.response["code"] == 0:
             print("取消批次接口正常")
         else:
             print("取消批次接口异常")
-            print(self.return_data["msg"])
+            print(self.response["msg"])
     #新增或修改停呼号码
     @unittest.skip
     def testa_tingc(self):
@@ -388,13 +397,14 @@ class test_robot(unittest.TestCase):
         param = json.dumps(param)
         print(param)
         localConfigHttp.set_data(param)
-        self.return_data = localConfigHttp.post()
-        print(self.return_data)
-        if self.return_data["code"] == 0:
+        return_data = localConfigHttp.post()
+        self.response = return_data.json()
+        print(self.response)
+        if self.response["code"] == 0:
             print("新增或修改停呼号码接口正常")
         else:
             print("新增或修改停呼号码接口异常")
-            print(self.return_data["msg"])
+            print(self.response["msg"])
 
     #停呼号码删除
     @unittest.skip
@@ -416,13 +426,14 @@ class test_robot(unittest.TestCase):
         param = json.dumps(param)
         print(param)
         localConfigHttp.set_data(param)
-        self.return_data = localConfigHttp.post()
-        print(self.return_data)
-        if self.return_data["code"] == 0:
+        return_data = localConfigHttp.post()
+        self.response = return_data.json()
+        print(self.response)
+        if self.response["code"] == 0:
             print("停呼号码删除接口正常")
         else:
             print("停呼号码删除接口异常")
-            print(self.return_data["msg"])
+            print(self.response["msg"])
 
     #获取停呼号码列表
     @unittest.skip
@@ -444,14 +455,15 @@ class test_robot(unittest.TestCase):
         param = json.dumps(param)
         print(param)
         localConfigHttp.set_data(param)
-        self.return_data = localConfigHttp.post()
-        print(self.return_data)
-        if self.return_data["code"] == 0:
+        return_data = localConfigHttp.post()
+        self.response = return_data.json()
+        print(self.response)
+        if self.response["code"] == 0:
             print("获取停呼号码列表接口正常")
-            print(self.return_data["data"])
+            print(self.response["data"])
         else:
             print("获取停呼号码列表接口异常")
-            print(self.return_data["msg"])
+            print(self.response["msg"])
 
 
 if __name__ == "__main__":
