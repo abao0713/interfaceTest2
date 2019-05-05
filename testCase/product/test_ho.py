@@ -12,7 +12,7 @@ from commonsrc.test_login import test_login
 import time
 
 
-assigneeInfo_xls = common.get_xls("test_hos.xlsx", "Sheet2")
+assigneeInfo_xls = common.get_xls("test_hos.xls", "api")
 localReadConfig = readConfig.ReadConfig()
 localConfigHttp = configHttp.ConfigHttp()
 proDir = readConfig.proDir
@@ -57,7 +57,7 @@ class ProductInfo(unittest.TestCase):
         #if self.No == "HDP114":
             a = test_login()
             token = a.test_ho()
-            time.sleep(1)
+            time.sleep(2)
             headers = {"content-type": "application/x-www-form-urlencoded",
                        "Authorization":"Bearer "+token}
             #print(self.Request_data)
@@ -69,23 +69,31 @@ class ProductInfo(unittest.TestCase):
                 if self.Method == 'get':
                     # get http
                     self.response = localConfigHttp.get()
+                    if self.response.status_code != 201:
+                        httpcode = self.response.status_code
+                        value = "http"+str(httpcode)
+                        result = "http"+str(httpcode)
+                        print(self.response.content.decode(encoding='utf-8'))
                     #self.info = json.loads(self.json_response)
-                    self.info = self.response.content.decode(encoding='utf-8')
-                    print(self.info)
-                    self.info = json.loads(self.info)
-                    print(self.response.content.decode(encoding='utf-8'))
-                    if self.info["error_code"] == 0:
-                        msg = self.info["msg"]
-                        value = msg
-                        result = 1
+
                     else:
-                        msg = self.info["msg"]
-                        code = self.info["error_code"]
-                        self.logger.debug(msg)
-                        print(msg + 'cg')
-                        self.log.build_case_line(self.Api_name, msg)
-                        value = msg
-                        result = code
+                        self.info = self.response.content.decode(encoding='utf-8')
+                        self.info = json.loads(self.info)
+
+                        print(self.response.content.decode(encoding='utf-8'))
+
+                        if self.info["error_code"] == 0:
+                            msg = self.info["msg"]
+                            value = msg
+                            result = 1
+                        else:
+                            msg = self.info["msg"]
+                            code = self.info["error_code"]
+                            self.logger.debug(msg)
+                            print(msg + 'cg')
+                            self.log.build_case_line(self.Api_name, msg)
+                            value = msg
+                            result = code
                     # check result
                     """
                     if common.check_result(self.Return_data, self.response):
@@ -100,10 +108,13 @@ class ProductInfo(unittest.TestCase):
                     # response.setContentType("charset=utf-8”)
 
                     return_data = localConfigHttp.post()
-                    if return_data.status_code == 200:
+                    if return_data.status_code != 201:
+                        httpcode = return_data.status_code
+                        result = "http"+str(httpcode)
+                        value = "http"+str(httpcode)
+                    else:
 
                         self.response = return_data.json()
-
                         if self.response["error_code"] == 0:
                             msg = self.response["msg"]
                             value = msg
@@ -125,7 +136,7 @@ class ProductInfo(unittest.TestCase):
                             value = msg
                             result = code
             #xlsPath = os.path.join(proDir, "testFile", 'case', 'test_ho.xlsx')
-            filepath = os.path.join(proDir, "testFile", 'case', 'test_ho_result.xlsx')
+            filepath = os.path.join(proDir, "testFile", 'case', 'test_ho_result.xls')
             #filepath = os.path.join(proDir, "testFile", 'case', 'test_ho.xlsx')
             i, j = common.local(filepath=filepath, sheet_name='api', str=self.No)  # 定位查询字段在第几行第几列
             data = xlrd.open_workbook(filepath)  # 打开指定的excel文件
