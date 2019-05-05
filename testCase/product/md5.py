@@ -5,7 +5,7 @@ import json
 s=int(time.time()*1000)#当前时间对应reqCode，timestamp
 e=str(s)
 print(s)#reqCode，timestamp两个值相等
-h='wed'+e+e
+h='Aa123456'+e+e
 print(h)
 m= hashlib.md5()#加密
 m.update(h.encode(encoding='utf-8')) #生成加密串，其中h是要加密的字符串，对应sign字段
