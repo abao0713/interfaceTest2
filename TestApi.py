@@ -157,6 +157,15 @@ class test_robot(unittest.TestCase):
                 'callLines': '22',#线路数
                 'strategyCode': 'SG000002',#策略编号
                 'batchType': '信用卡',#产品类型
+                'gateways':[
+
+                    {
+                        'gateway': 'gwjn2'
+                    },
+                    {
+                        'gateway': 'gwjn2-1'
+                    }
+                ],#网关
                 'startDate': '',#开始日期
                 'startTime': '09:30',#每日开始时间
                 'endTime' : '21:00',#每日结束时间
