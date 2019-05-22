@@ -25,14 +25,14 @@ for i in range(1,nrows):
     s = int(time.time() * 1000)  # 当前时间对应reqCode，timestamp
     timestamp = str(s)
     print(s)  # reqCode，timestamp两个值相等
-    h = 'wed' + timestamp + timestamp
+    h = 'Aa1234567' + timestamp + timestamp
     m = hashlib.md5()  # 加密
     m.update(h.encode(encoding='utf-8'))  # 生成加密串，其中h是要加密的字符串，对应sign字段
     sign = m.hexdigest()
     param = {"data":name}
 
     data = {'reqCode': timestamp,
-             'accountName': "万达-万e贷",
+             'accountName': "1223",
              'timestamp': timestamp,
              'sign': sign
              }

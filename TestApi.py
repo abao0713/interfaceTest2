@@ -10,7 +10,7 @@ localConfigHttp = configHttp.ConfigHttp()
 def hash_robot():
     s = int(time.time() * 1000)  # 当前时间对应reqCode，timestamp
     timestamp = str(s)
-    h = 'Aa1234567' + timestamp + timestamp
+    h = 'Aa123456' + timestamp + timestamp
     print(h)
     m = hashlib.md5()  # 加密
     m.update(h.encode(encoding='utf-8'))  # 生成加密串，其中h是要加密的字符串，对应sign字段
@@ -22,7 +22,7 @@ class test_robot(unittest.TestCase):
     def setUpClass(cls):
         """setUpClass为类的初始化方法，在整个类运行前执行只执行一次"""
         global baseurl
-        baseurl = 'https://www.zhiling.robotsh.com'
+        baseurl = 'https://robotmer.zhilingsd.com'
 
     @classmethod
     def tearDownClass(cls):
@@ -39,7 +39,7 @@ class test_robot(unittest.TestCase):
                 'limit' : 6
                 }
         param = {'reqCode': timestamp,
-                 'accountName': 1223,
+                 'accountName': '1223',
                  'timestamp': timestamp,
                  'sign': sign,
                  'data': data
@@ -97,7 +97,7 @@ class test_robot(unittest.TestCase):
         request_url = '/api/api/task/importBatch'
         global aname
         aname = 'ybj'+timestamp
-
+        print(aname)
         ainfo = [{
 			'billCode':'api-YBJ-20190403-0953',
 			'productName':'现金贷',
@@ -153,32 +153,36 @@ class test_robot(unittest.TestCase):
 
 		}]
 
-        data = {'taskName': aname,#批次名称
-                'callLines': '22',#线路数
+        data = {
+            'smsCode': '',
+            'taskName': aname,#批次名称
+                'callLines': 10,#线路数
                 'strategyCode': 'SG000002',#策略编号
                 'batchType': '信用卡',#产品类型
                 'gateways':[
 
-                    {
-                        'gateway': 'gwjn2'
-                    },
-                    {
-                        'gateway': 'gwjn2-1'
-                    }
-                ],#网关
+                     {
+                         'gateway': 'gw_shudihua1_4',
+                         'callLines':1
+                     },
+                     {
+                         'gateway': 'gwsh1',
+                         'callLines':5
+                     }
+                 ],#网关
+
                 'startDate': '',#开始日期
                 'startTime': '09:30',#每日开始时间
                 'endTime' : '21:00',#每日结束时间
                 'executeTime': [{'beginTime':'09:02',
-                                 'endTime': '10:12'},
-                                {'beginTime': '14:10',
-                                 'endTime': '20:12'}
+                                 'endTime': '20:12'},
+
                                 ],
                 'caseInfos' :ainfo#案件信息
                 }
 
         param = {'reqCode': timestamp,
-                 'accountName': 1223,
+                 'accountName': '智灵平台',
                  'timestamp': timestamp,
                  'sign': sign,
                  'data': data
@@ -188,7 +192,7 @@ class test_robot(unittest.TestCase):
         headers = {'content-type': 'application/json'}
         localConfigHttp.set_headers(headers)
         param = json.dumps(param)
-        print(param)
+        #print(param)
         localConfigHttp.set_data(param)
         return_data = localConfigHttp.post()
         self.response = return_data.json()
@@ -198,6 +202,8 @@ class test_robot(unittest.TestCase):
         else:
             print("新建批次案件导入接口异常")
             print(self.response["msg"])
+
+
     #案件还款
     @unittest.skip
     def test6_hunan(self):
